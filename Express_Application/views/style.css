@@ -16607,7 +16607,7 @@ a:focus {
   box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.07);
 }
 .book-list-icon {
-  background-image: url("images/book-list-icons.png");
+  background-image: url("/images/book-list-icons.png");
   background-repeat: no-repeat;
   height: 55px;
   left: -10px;
