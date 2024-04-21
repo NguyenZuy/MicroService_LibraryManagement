@@ -31,13 +31,13 @@
     <body>
 
 <!-- Full-screen grey panel -->
-<div style="z-index:1000; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center;">
+<div id="popupContainer" style="z-index:1000; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center;">
 
     <!-- Popup container -->
     <div style="position:relative; padding:20px; background-color:white; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1); text-align:center; padding-top:40px;">
       
       <!-- Cancel button -->
-      <button onclick="document.body.removeChild(this.parentNode.parentNode)" style="color: black; position:absolute; top:-5px; right:-15px; border:none; background-color:transparent; font-size:16px; cursor:pointer;">X</button>
+      <button id="cancelButton" style="color: black; position:absolute; top:-5px; right:-15px; border:none; background-color:transparent; font-size:16px; cursor:pointer;">X</button>
       
       <!-- Title -->
       <h2 style="margin-top:0; color:#333;">Please select loan receipt or create new</h2>
@@ -712,3 +712,17 @@
 
 
 </html>
+
+
+<script>
+    // Get the cancel button element
+var cancelButton = document.getElementById("cancelButton");
+
+// Add click event listener to the cancel button
+cancelButton.addEventListener("click", function() {
+    // Hide the popup by setting its display style to "none"
+    var popupContainer = document.getElementById("popupContainer");
+    popupContainer.style.display = "none";
+});
+
+</script>

@@ -35,6 +35,17 @@ app.get('/books', async (req, res) => {
 
 app.get('/loan', async (req, res) => {
   try {
+
+    res.render('loan');
+  } catch (error) {
+    console.error('Error fetching books:', error);
+    res.status(500).send('Error fetching books');
+  }
+});
+
+app.get('/loan/:action', async (req, res) => {
+  try {
+    const action = req.params.action;
     res.render('loan');
   } catch (error) {
     console.error('Error fetching books:', error);
