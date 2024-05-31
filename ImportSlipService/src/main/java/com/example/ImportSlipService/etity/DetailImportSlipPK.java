@@ -12,10 +12,8 @@ import java.io.Serializable;
 @Embeddable
 public class DetailImportSlipPK implements Serializable {
 
-    @Column(name = "id_import_slip")
-    private Integer importSlipId;
+    private Integer id_import_slip;
 
-    @Column(name = "id_book")
-    private String bookId;
+    private String id_book;
 }
 

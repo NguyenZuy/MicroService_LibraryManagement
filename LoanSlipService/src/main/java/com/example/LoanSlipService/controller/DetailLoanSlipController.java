@@ -21,6 +21,16 @@ public class DetailLoanSlipController {
         return detailLoanSlipService.GetAllDetailSlip();
     }
 
+    @GetMapping("getByLoan/{id}")
+    public ResponseEntity<List<DetailLoanSlipDto>> GetDetailLoanSlipByLoanId(@PathVariable int id) {
+        return detailLoanSlipService.GetDetailSlipByLoanId(id);
+    }
+
+    @PutMapping("updateDetailStatus/{id}/{bookName}")
+    public ResponseEntity<DetailLoanSlip> UpdateDetailLoanSlipStatus(@PathVariable int id, @PathVariable String bookName) {
+        return detailLoanSlipService.UpdateDetailSlipStatus(id, bookName);
+    }
+
     @PostMapping("add")
     public ResponseEntity<List<DetailLoanSlip>> AddDetailLoanSlip
             (@RequestBody DetailLoanSlipDto detailLoanSlipDto) {

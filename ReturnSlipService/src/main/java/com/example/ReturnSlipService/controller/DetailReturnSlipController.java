@@ -27,6 +27,11 @@ public class DetailReturnSlipController {
         return detailReturnSlipService.AddDetailSlip(detailReturnSlipDto);
     }
 
+    @GetMapping("getByReturn/{id}")
+    public ResponseEntity<List<DetailReturnSlipDto>> GetDetailReturnSlipByLoanId(@PathVariable int id) {
+        return detailReturnSlipService.GetDetailSlipByReturnId(id);
+    }
+
     @GetMapping("getBooks")
     public ResponseEntity<List<BookDto>> GetBooks() {
         return detailReturnSlipService.GetBooksForDetailReturn();

@@ -13,4 +13,5 @@ public class DetailOrderSlipDto {
     private Integer orderSlipId;
     private String bookName;
     private Integer quantity;
+    private String status;
 }

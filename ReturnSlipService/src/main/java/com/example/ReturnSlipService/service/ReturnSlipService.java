@@ -52,15 +52,14 @@ public class ReturnSlipService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public ResponseEntity<List<ReturnSlip>> addReturnSlip(ReturnSlip ReturnSlip) {
+    public ResponseEntity<ReturnSlip> addReturnSlip(ReturnSlip returnSlip) {
         try {
-            returnSlipDao.save(ReturnSlip);
-            List<ReturnSlip> slipsRs = returnSlipDao.findAll();
-            return new ResponseEntity<>(slipsRs, HttpStatus.OK);
+            returnSlipDao.save(returnSlip);
+            return new ResponseEntity<>(returnSlip, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public ResponseEntity<List<ReturnSlip>> deleteReturnSlip(ReturnSlip ReturnSlip) {

@@ -25,7 +25,7 @@ public class CategoryController {
         return categoryService.deleteCategory(category);
     }
 
-    @PutMapping
+    @PutMapping("update")
     public ResponseEntity<List<Category>> updateCategory(@RequestBody Category category) {
         return categoryService.updateCategory(category);
     }

@@ -27,8 +27,8 @@ public class BookController {
         return bookService.addBook(bookDto);
     }
 
-    @GetMapping("findId/{id}")
-    public ResponseEntity<Optional<Book>> findBookById(@PathVariable String id) {
+    @GetMapping("findById/{id}")
+    public ResponseEntity<BookDto> findBookById(@PathVariable String id) {
         return bookService.findBookById(id);
     }
 
@@ -38,13 +38,28 @@ public class BookController {
     }
 
     @GetMapping("getAll")
-    public ResponseEntity<List<Book>> getAllBooks() {
+    public ResponseEntity<List<BookDto>> getAllBooks() {
         return bookService.getAllBooks();
     }
 
-    @PutMapping
-    public ResponseEntity<List<Book>> updateBook(@RequestBody Book book) {
+    @GetMapping("getBorrowable")
+    public ResponseEntity<List<BookDto>> getBorrowableBooks() {
+        return bookService.getBorrowableBooks();
+    }
+
+    @PutMapping("update")
+    public ResponseEntity<BookDto> updateBook(@RequestBody BookDto book) {
         return bookService.updateBook(book);
+    }
+
+    @PutMapping("setBookBorrowable/{id}")
+    public ResponseEntity<String> updateBookBorrowable(@PathVariable String id) {
+        return bookService.updateBookBorrowable(id);
+    }
+
+    @PutMapping("setBookNotBorrowable/{id}")
+    public ResponseEntity<String> updateBookNotBorrowable(@PathVariable String id) {
+        return bookService.updateBookNotBorrowable(id);
     }
 
     @DeleteMapping
@@ -55,7 +70,6 @@ public class BookController {
     // Feign
     @GetMapping("getBooksForSlip")
     public ResponseEntity<List<BookDto>> getAllBooksForSlip() {
-        System.out.println(environment.getProperty("local.server.port"));
         return bookService.getBooksForLoan();
     }
 
@@ -64,7 +78,17 @@ public class BookController {
         return bookService.getIdBookByTitle(title);
     }
 
-    @PutMapping("updateBookQuantity/{id}/{quantity}")
+    @PutMapping("decreaseBookQuantity/{id}/{quantity}")
+    public ResponseEntity<String> decreaseBookQuantity(@PathVariable String id, @PathVariable Integer quantity) {
+        return bookService.decreaseBookQuantity(id, quantity);
+    }
+
+    @PutMapping("increaseBookQuantity/{id}/{quantity}")
+    public ResponseEntity<String> increaseBookQuantity(@PathVariable String id, @PathVariable Integer quantity) {
+        return bookService.increaseBookQuantity(id, quantity);
+    }
+
+    @PutMapping("importNewBook/{id}/{quantity}")
     public ResponseEntity<String> updateBookQuantity(@PathVariable String id, @PathVariable Integer quantity) {
         return bookService.updateBookQuantity(id, quantity);
     }

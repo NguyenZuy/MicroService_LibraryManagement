@@ -35,7 +35,7 @@ public class DetailImportSlipService {
     @Autowired
     SupplierServiceFeignInterface supplierServiceFeignInterface;
 
-    public ResponseEntity<List<DetailImportSlip>> AddDetailSlip(DetailImportSlipDto detailImportSlipDto) {
+    public ResponseEntity<String> AddDetailSlip(DetailImportSlipDto detailImportSlipDto) {
         try {
             DetailImportSlip detailImportSlip = new DetailImportSlip();
 
@@ -45,27 +45,28 @@ public class DetailImportSlipService {
 
             // Set primary key
             DetailImportSlipPK detailImportSlipPK = new DetailImportSlipPK();
-            detailImportSlipPK.setImportSlipId(detailImportSlipDto.getImportSlipId());
-            detailImportSlipPK.setBookId(bookId);
+            detailImportSlipPK.setId_import_slip(detailImportSlipDto.getImportSlipId());
+            detailImportSlipPK.setId_book(bookId);
             detailImportSlip.setId(detailImportSlipPK);
 
             // Set ImportSlip
             Optional<ImportSlip> ImportSlip = importSlipDao.findById(detailImportSlipDto.getImportSlipId());
             detailImportSlip.setImportSlip(ImportSlip.orElse(null));
-
-            // Update book available quantity
-            String updateQuantityResult = UpdateBookAvailableQuantity(bookId, detailImportSlipDto.getQuantity()).getBody();
-            if (!Objects.equals(updateQuantityResult, "Update book available quantity successful"))
-                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
             detailImportSlip.setQuantity(detailImportSlipDto.getQuantity());
 
             detailImportSlipDao.save(detailImportSlip);
+
+            // Update book available quantity
+            String updateQuantityResult = UpdateBookQuantity(bookId, detailImportSlipDto.getQuantity()).getBody();
+            if (!Objects.equals(updateQuantityResult, "Update book quantity successful"))
+                return new ResponseEntity<>("Error update book quantity", HttpStatus.BAD_REQUEST);
+
             List<DetailImportSlip> slipsRs = detailImportSlipDao.findAll();
-            return new ResponseEntity<>(slipsRs, HttpStatus.OK);
+            return new ResponseEntity<>("Success!", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Server error", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public ResponseEntity<List<DetailImportSlipDto>> GetAllDetailSlip() {
@@ -75,7 +76,7 @@ public class DetailImportSlipService {
             for (var slip : slipsRs) {
                 DetailImportSlipDto ImportSlipDto = new DetailImportSlipDto();
                 ImportSlipDto.setImportSlipId(slip.getImportSlip().getId());
-                ImportSlipDto.setBookName(GetBookTitleById(slip.getId().getBookId()).getBody());
+                ImportSlipDto.setBookName(GetBookTitleById(slip.getId().getId_book()).getBody());
                 ImportSlipDto.setQuantity(slip.getQuantity());
                 detailImportSlipDtos.add(ImportSlipDto);
             }
@@ -86,6 +87,23 @@ public class DetailImportSlipService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    public ResponseEntity<List<DetailImportSlipDto>> GetDetailByImportId(Integer id) {
+        try {
+            List<DetailImportSlip> slipsRs = detailImportSlipDao.findByImportSlip_Id(id);
+            List<DetailImportSlipDto> detailImportSlipDtos = new ArrayList<>();
+            for (var slip : slipsRs) {
+                DetailImportSlipDto ImportSlipDto = new DetailImportSlipDto();
+                ImportSlipDto.setImportSlipId(slip.getImportSlip().getId());
+                ImportSlipDto.setBookName(GetBookTitleById(slip.getId().getId_book()).getBody());
+                ImportSlipDto.setQuantity(slip.getQuantity());
+                detailImportSlipDtos.add(ImportSlipDto);
+            }
+            return new ResponseEntity<>(detailImportSlipDtos, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     // Feign book
     public ResponseEntity<List<BookDto>> GetBooksForDetailImport() {
         List<BookDto> books = bookServiceFeignInterface.getAllBooksForSlip().getBody();
@@ -96,7 +114,7 @@ public class DetailImportSlipService {
         return new ResponseEntity<>(bookServiceFeignInterface.getIdBookByTitle(title).getBody(), HttpStatus.OK);
     }
 
-    public ResponseEntity<String> UpdateBookAvailableQuantity(String id, Integer quantity) {
+    public ResponseEntity<String> UpdateBookQuantity(String id, Integer quantity) {
         return new ResponseEntity<>(bookServiceFeignInterface.updateBookQuantity(id, quantity).getBody(), HttpStatus.OK);
     }
 
@@ -115,7 +133,7 @@ public class DetailImportSlipService {
                 supplierServiceFeignInterface.getIdSupplierByName(name).getBody(), HttpStatus.OK);
     }
 
-    public ResponseEntity<String> GetSupplierNameById(String id) {
+    public ResponseEntity<String> GetSupplierNameById(Integer id) {
         return new ResponseEntity<>(
                 supplierServiceFeignInterface.getSupplierNameById(id).getBody(), HttpStatus.OK);
     }

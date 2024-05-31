@@ -36,7 +36,7 @@ public class DetailOrderSlipService {
     @Autowired
     SupplierServiceFeignInterface supplierServiceFeignInterface;
 
-    public ResponseEntity<List<DetailOrderSlip>> AddDetailSlip(DetailOrderSlipDto detailOrderSlipDto) {
+    public ResponseEntity<DetailOrderSlipDto> AddDetailSlip(DetailOrderSlipDto detailOrderSlipDto) {
         try {
             DetailOrderSlip detailOrderSlip = new DetailOrderSlip();
 
@@ -46,27 +46,22 @@ public class DetailOrderSlipService {
 
             // Set primary key
             DetailOrderSlipPK detailOrderSlipPK = new DetailOrderSlipPK();
-            detailOrderSlipPK.setOrderSlipId(detailOrderSlipDto.getOrderSlipId());
-            detailOrderSlipPK.setBookId(bookId);
+            detailOrderSlipPK.setId_order_slip(detailOrderSlipDto.getOrderSlipId());
+            detailOrderSlipPK.setId_book(bookId);
             detailOrderSlip.setId(detailOrderSlipPK);
 
             // Set OrderSlip
             Optional<OrderSlip> OrderSlip = orderSlipDao.findById(detailOrderSlipDto.getOrderSlipId());
             detailOrderSlip.setOrderSlip(OrderSlip.orElse(null));
-
-            // Update book available quantity
-            String updateQuantityResult = UpdateBookAvailableQuantity(bookId, detailOrderSlipDto.getQuantity()).getBody();
-            if (!Objects.equals(updateQuantityResult, "Update book available quantity successful"))
-                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
             detailOrderSlip.setQuantity(detailOrderSlipDto.getQuantity());
+            detailOrderSlip.setStatus(detailOrderSlipDto.getStatus());
 
             detailOrderSlipDao.save(detailOrderSlip);
-            List<DetailOrderSlip> slipsRs = detailOrderSlipDao.findAll();
-            return new ResponseEntity<>(slipsRs, HttpStatus.OK);
+            return new ResponseEntity<>(detailOrderSlipDto, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public ResponseEntity<List<DetailOrderSlipDto>> GetAllDetailSlip() {
@@ -76,7 +71,7 @@ public class DetailOrderSlipService {
             for (var slip : slipsRs) {
                 DetailOrderSlipDto OrderSlipDto = new DetailOrderSlipDto();
                 OrderSlipDto.setOrderSlipId(slip.getOrderSlip().getId());
-                OrderSlipDto.setBookName(GetBookTitleById(slip.getId().getBookId()).getBody());
+                OrderSlipDto.setBookName(GetBookTitleById(slip.getId().getId_book()).getBody());
                 OrderSlipDto.setQuantity(slip.getQuantity());
                 detailOrderSlipDtos.add(OrderSlipDto);
             }
@@ -85,6 +80,53 @@ public class DetailOrderSlipService {
             e.printStackTrace();
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public ResponseEntity<List<DetailOrderSlipDto>> GetByOrderId(Integer id) {
+        try {
+            List<DetailOrderSlip> detailOrderSlipsRs = detailOrderSlipDao.findByOrderSlip_Id(id);
+            List<DetailOrderSlipDto> detailOrderSlipDtos = new ArrayList<>();
+            for (var slip : detailOrderSlipsRs) {
+                DetailOrderSlipDto detailOrderSlipDto = new DetailOrderSlipDto();
+                detailOrderSlipDto.setOrderSlipId(slip.getOrderSlip().getId());
+                detailOrderSlipDto.setBookName(GetBookTitleById(slip.getId().getId_book()).getBody());
+                detailOrderSlipDto.setQuantity(slip.getQuantity());
+                detailOrderSlipDto.setStatus(slip.getStatus());
+                detailOrderSlipDtos.add(detailOrderSlipDto);
+            }
+            return new ResponseEntity<>(detailOrderSlipDtos, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public ResponseEntity<String> UpdateDetailSlipStatus(int id, String bookName){
+        try {
+            // Get book id by name
+            String bookId = GetBookIdByTitle(bookName).getBody();
+            System.out.println(bookId);
+
+            DetailOrderSlipPK detailLoanSlipPK = new DetailOrderSlipPK();
+            detailLoanSlipPK.setId_order_slip(id);
+            detailLoanSlipPK.setId_book(bookId);
+
+            System.out.println(detailLoanSlipPK.getId_order_slip() + " " + detailLoanSlipPK.getId_book());
+
+            Optional<DetailOrderSlip> detailOrderSlipOptional = detailOrderSlipDao.findById(detailLoanSlipPK);
+
+            if(detailOrderSlipOptional.isPresent()){
+                DetailOrderSlip detailOrderSlip = detailOrderSlipOptional.get();
+                detailOrderSlip.setStatus("Imported");
+                detailOrderSlipDao.save(detailOrderSlip);
+                return new ResponseEntity<>("Success", HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // Feign book
@@ -116,7 +158,7 @@ public class DetailOrderSlipService {
                 supplierServiceFeignInterface.getIdSupplierByName(name).getBody(), HttpStatus.OK);
     }
 
-    public ResponseEntity<String> GetSupplierNameById(String id) {
+    public ResponseEntity<String> GetSupplierNameById(int id) {
         return new ResponseEntity<>(
                 supplierServiceFeignInterface.getSupplierNameById(id).getBody(), HttpStatus.OK);
     }

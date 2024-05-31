@@ -30,6 +30,11 @@ public class SupplierController {
         return SupplierService.findSupplierById(id);
     }
 
+    @GetMapping("getByActiveStatus")
+    public ResponseEntity<List<Supplier>> getSuppliersByActiveStatus() {
+        return SupplierService.getActiveSuppliers();
+    }
+
     @GetMapping("/{name}")
     public ResponseEntity<List<Supplier>> findSupplierByName(@PathVariable String name) {
         return SupplierService.findSupplierByName(name);
@@ -40,7 +45,7 @@ public class SupplierController {
         return SupplierService.getAllSuppliers();
     }
 
-    @PutMapping
+    @PutMapping("update")
     public ResponseEntity<List<Supplier>> updateSupplier(@RequestBody Supplier supplier) {
         return SupplierService.updateSupplier(supplier);
     }
@@ -53,7 +58,6 @@ public class SupplierController {
     // Feign
     @GetMapping("getSuppliersForSlip")
     public ResponseEntity<List<Supplier>> getAllSuppliersForSLip() {
-        System.out.println(environment.getProperty("local.server.port"));
         return SupplierService.getSuppliersForLoan();
     }
 

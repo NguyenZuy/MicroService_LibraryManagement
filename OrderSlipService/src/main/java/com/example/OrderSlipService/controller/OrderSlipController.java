@@ -1,5 +1,6 @@
 package com.example.OrderSlipService.controller;
 
+import com.example.OrderSlipService.dto.OrderSlipDto;
 import com.example.OrderSlipService.entity.OrderSlip;
 import com.example.OrderSlipService.service.OrderSlipService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +18,22 @@ public class OrderSlipController {
     OrderSlipService orderSlipService;
 
     @GetMapping("getAll")
-    public ResponseEntity<List<OrderSlip>> GetAllorderSlip() {
+    public ResponseEntity<List<OrderSlipDto>> GetAllOrderSlip() {
         return orderSlipService.GetAllSlip();
     }
 
     @PostMapping("getById/{id}")
-    public ResponseEntity<Optional<OrderSlip>> GetorderSlipById(@PathVariable Integer id) {
+    public ResponseEntity<OrderSlipDto> GetOrderSlipById(@PathVariable Integer id) {
         return orderSlipService.GetSlipById(id);
     }
 
     @PostMapping("add")
-    public ResponseEntity<List<OrderSlip>> AddorderSlip(@RequestBody OrderSlip orderSlip) {
-        return orderSlipService.addOrderSlip(orderSlip);
+    public ResponseEntity<OrderSlipDto> AddOrderSlip(@RequestBody OrderSlipDto orderSlipDto) {
+        return orderSlipService.addOrderSlip(orderSlipDto);
     }
 
     @PutMapping("update")
-    public ResponseEntity<List<OrderSlip>> UpdateorderSlip(@RequestBody OrderSlip orderSlip) {
+    public ResponseEntity<List<OrderSlip>> UpdateOrderSlip(@RequestBody OrderSlip orderSlip) {
         return orderSlipService.UpdateOrderSlip(orderSlip);
     }
 

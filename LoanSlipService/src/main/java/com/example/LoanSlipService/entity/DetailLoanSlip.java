@@ -39,4 +39,7 @@ public class DetailLoanSlip {
 
     @Column(name = "return_date")
     private Date returnDate;
+
+    @Column(name = "status")
+    private String status;
 }

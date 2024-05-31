@@ -17,7 +17,7 @@ public interface DetailReturnSlipInterface {
     @GetMapping("book/getIdBookByTitle/{title}")
     ResponseEntity<String> getIdBookByTitle(@PathVariable String title);
 
-    @PutMapping("book/updateBookQuantity/{id}/{quantity}")
+    @PutMapping("book/increaseBookQuantity/{id}/{quantity}")
     ResponseEntity<String> updateBookQuantity(@PathVariable String id, @PathVariable Integer quantity);
 
     @GetMapping("book/getBookTitleById/{id}")

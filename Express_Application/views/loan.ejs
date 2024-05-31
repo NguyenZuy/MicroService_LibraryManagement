@@ -15,7 +15,9 @@
     <link href="/images/favicon.ico" rel="icon" type="image/x-icon" />
 
     <!-- Fonts -->
-    <link href="/https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i%7CLato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
+    <link
+        href="/https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i%7CLato:100,100i,300,300i,400,400i,700,700i,900,900i"
+        rel="stylesheet" />
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Mobile Menu -->
@@ -38,11 +40,10 @@
         <script src="js/respond.min.js"></script>
         <![endif]-->
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 </head>
 
 <body>
-
-
     <!-- Start: Header Section -->
     <header id="header-v1" class="navbar-wrapper">
         <div class="container">
@@ -68,7 +69,8 @@
                                         <div class="topbar-info">
                                             <a href="tel:+61-3-8376-6284"><i class="fa fa-phone"></i>+84-399905432</a>
                                             <span>/</span>
-                                            <a href="mailto:support@libraria.com"><i class="fa fa-envelope"></i>suytdocotdien@gmail.com</a>
+                                            <a href="mailto:support@libraria.com"><i
+                                                    class="fa fa-envelope"></i>suytdocotdien@gmail.com</a>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -78,34 +80,40 @@
                                                 <div class="dropdown-menu cart-dropdown">
                                                     <ul>
                                                         <li class="clearfix">
-                                                            <img src="images/header-cart-image-01.jpg" alt="cart item" />
+                                                            <img src="images/header-cart-image-01.jpg"
+                                                                alt="cart item" />
                                                             <div class="item-info">
                                                                 <div class="name">
                                                                     <a href="#">The Great Gatsby</a>
                                                                 </div>
-                                                                <div class="author"><strong>Author:</strong> F. Scott Fitzgerald</div>
+                                                                <div class="author"><strong>Author:</strong> F. Scott
+                                                                    Fitzgerald</div>
                                                                 <div class="price">1 X $10.00</div>
                                                             </div>
                                                             <a class="remove" href="#"><i class="fa fa-trash-o"></i></a>
                                                         </li>
                                                         <li class="clearfix">
-                                                            <img src="images/header-cart-image-02.jpg" alt="cart item" />
+                                                            <img src="images/header-cart-image-02.jpg"
+                                                                alt="cart item" />
                                                             <div class="item-info">
                                                                 <div class="name">
                                                                     <a href="#">The Great Gatsby</a>
                                                                 </div>
-                                                                <div class="author"><strong>Author:</strong> F. Scott Fitzgerald</div>
+                                                                <div class="author"><strong>Author:</strong> F. Scott
+                                                                    Fitzgerald</div>
                                                                 <div class="price">1 X $10.00</div>
                                                             </div>
                                                             <a class="remove" href="#"><i class="fa fa-trash-o"></i></a>
                                                         </li>
                                                         <li class="clearfix">
-                                                            <img src="images/header-cart-image-03.jpg" alt="cart item" />
+                                                            <img src="images/header-cart-image-03.jpg"
+                                                                alt="cart item" />
                                                             <div class="item-info">
                                                                 <div class="name">
                                                                     <a href="#">The Great Gatsby</a>
                                                                 </div>
-                                                                <div class="author"><strong>Author:</strong> F. Scott Fitzgerald</div>
+                                                                <div class="author"><strong>Author:</strong> F. Scott
+                                                                    Fitzgerald</div>
                                                                 <div class="price">1 X $10.00</div>
                                                             </div>
                                                             <a class="remove" href="#"><i class="fa fa-trash-o"></i></a>
@@ -131,15 +139,20 @@
                                         <a data-toggle="dropdown" class="dropdown-toggle disabled" href="/home">Home</a>
                                     </li>
                                     <li class="dropdown">
-                                        <a data-toggle="dropdown" class="dropdown-toggle disabled" href="/books">Books</a>
+                                        <a data-toggle="dropdown" class="dropdown-toggle disabled"
+                                            href="/books">Books</a>
                                     </li>
                                     <li class="dropdown active">
                                         <a data-toggle="dropdown" class="dropdown-toggle disabled" href="/loan">Loan</a>
                                     </li>
                                     <li class="dropdown">
-                                        <a data-toggle="dropdown" class="dropdown-toggle disabled" href="/return">Return</a>
+                                        <a data-toggle="dropdown" class="dropdown-toggle disabled"
+                                            href="/returnSlip">Return</a>
                                     </li>
-                                    <li><a href="analyst">Analyst</a></li>
+                                    <li class="dropdown">
+                                        <a data-toggle="dropdown" class="dropdown-toggle disabled"
+                                            href="/supplier">Supplier</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -179,7 +192,7 @@
     <section class="page-banner services-banner">
         <div class="container">
             <div class="banner-header">
-                <h2>Books & Media Listing</h2>
+                <h2>Loan Slips</h2>
                 <span class="underline center"></span>
                 <p class="lead">Proin ac eros pellentesque dolor pharetra tempo.</p>
             </div>
@@ -189,171 +202,99 @@
 
     <section class="search-filters" style="margin-top: 30px; margin-bottom: 30px">
         <div class="container">
-            <button onclick="toggleForm()" id="buttonCreate" style="display: block; margin: 0 auto; margin-top: 30px; margin-bottom: 30px">Create</button>
+            <button onclick="toggleForm()" id="buttonCreate"
+                style="display: block; margin: 0 auto; margin-top: 30px; margin-bottom: 30px">Create</button>
 
-    <form id="loanForm" style="display: none; margin-top: 20px;">
-        <div style="margin-bottom: 15px;">
-          <label for="bookTitle" style="display: block; margin-bottom: 5px;">Book Title:</label>
-          <input type="text" id="bookTitle" name="bookTitle" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            <form id="loanForm" onsubmit="submitLoanForm(event)" action="/loan" method="POST"
+                style="display: none; margin-top: 20px;">
+                <div style="margin-bottom: 15px;">
+                    <label for="email" style="display: block; margin-bottom: 5px;">Email:</label>
+                    <input type="email" id="email" name="email"
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="phoneNumber" style="display: block; margin-bottom: 5px;">Phone
+                        Number:</label>
+                    <input type="text" id="phoneNumber" name="phoneNumber"
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="address" style="display: block; margin-bottom: 5px;">Address:</label>
+                    <input type="text" id="address" name="address"
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="firstName" style="display: block; margin-bottom: 5px;">First
+                        Name:</label>
+                    <input type="text" id="firstName" name="firstName"
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="lastName" style="display: block; margin-bottom: 5px;">Last Name:</label>
+                    <input type="text" id="lastName" name="lastName"
+                        style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <button type="submit"
+                    style="display: block; margin: 0 auto; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">Submit</button>
+            </form>
         </div>
-        <div style="margin-bottom: 15px;">
-          <label for="borrowerName" style="display: block; margin-bottom: 5px;">Borrower's Name:</label>
-          <input type="text" id="borrowerName" name="borrowerName" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-        </div>
-        <div style="margin-bottom: 15px;">
-          <label for="loanDate" style="display: block; margin-bottom: 5px;">Loan Date:</label>
-          <input type="date" id="loanDate" name="loanDate" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-        </div>
-        <div style="margin-bottom: 15px;">
-          <label for="returnDate" style="display: block; margin-bottom: 5px;">Return Date:</label>
-          <input type="date" id="returnDate" name="returnDate" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-        </div>
-        <button type="submit" style="display: block; margin: 0 auto; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">Submit</button>
-      </form>
-      </div>
     </section>
 
-
-    <!-- Start: Products Section -->
+    <!-- Start: loan slips Section -->
     <div id="content" class="site-content">
         <div id="primary" class="content-area">
             <main id="main" class="site-main">
                 <div class="booksmedia-detail-main">
                     <div class="container">
-                        <div class="row">
-                            <!-- Start: Search Section -->
-                            <section class="search-filters">
-                                <div class="container">
-                                    <div class="filter-box">
-                                        <h3>What are you looking for at the library?</h3>
-                                        <form action="http://libraria.demo.presstigers.com/index.html" method="get">
-                                            <div class="col-md-4 col-sm-6">
-                                                <div class="form-group">
-                                                    <label class="sr-only" for="keywords">Search by Keyword</label>
-                                                    <input class="form-control" placeholder="Search by Keyword" id="keywords" name="keywords" type="text">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 col-sm-6">
-                                                <div class="form-group">
-                                                    <select name="catalog" id="catalog" class="form-control">
-                                                        <option>Search the Catalog</option>
-                                                        <option>Catalog 01</option>
-                                                        <option>Catalog 02</option>
-                                                        <option>Catalog 03</option>
-                                                        <option>Catalog 04</option>
-                                                        <option>Catalog 05</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 col-sm-6">
-                                                <div class="form-group">
-                                                    <select name="category" id="category" class="form-control">
-                                                        <option>All Categories</option>
-                                                        <option>Category 01</option>
-                                                        <option>Category 02</option>
-                                                        <option>Category 03</option>
-                                                        <option>Category 04</option>
-                                                        <option>Category 05</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2 col-sm-6">
-                                                <div class="form-group">
-                                                    <input class="form-control" type="submit" value="Search">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </section>
-                            <!-- End: Search Section -->
-                        </div>
-                        <div class="row">
-                            <div class="col-md-9 col-md-push-3" style="left: 5%">
-                                <div class="booksmedia-detail-box">
-                                    <div class="single-book-box">
-                                        <div class="post-thumbnail">
-                                            <div class="book-list-icon yellow-icon"></div>
-                                            <img alt="Book" src="images/books-media/list-view/book-media-01.jpg" />
-                                        </div>
-                                        <div class="post-detail">
-                                            <div class="books-social-sharing">
-                                                <ul>
-                                                    <li><a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
-                                                    </li>
-                                                    <li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
-                                                    </li>
-                                                    <li><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a>
-                                                    </li>
-                                                    <li><a href="#" target="_blank"><i class="fa fa-rss"></i></a>
-                                                    </li>
-                                                    <li><a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="optional-links">
-                                                <ul>
-                                                    <li>
-                                                        <a href="#" target="_blank" data-toggle="blog-tags" data-placement="top" title="Add To Cart">
-                                                            <i class="fa fa-shopping-cart"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" target="_blank" data-toggle="blog-tags" data-placement="top" title="Like">
-                                                            <i class="fa fa-heart"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" target="_blank" data-toggle="blog-tags" data-placement="top" title="Mail"><i class="fa fa-envelope"></i>
-                                                            </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" target="_blank" data-toggle="blog-tags" data-placement="top" title="Search">
-                                                            <i class="fa fa-search"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" target="_blank" data-toggle="blog-tags" data-placement="top" title="Print">
-                                                            <i class="fa fa-print"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <header class="entry-header">
-                                                <h2 class="entry-title">The Great Gatsby</h2>
-                                                <ul>
-                                                    <li><strong>Author:</strong> F. Scott Fitzgerald</li>
-                                                    <li><strong>ISBN:</strong> 9781581573268</li>
-                                                    <li>
-                                                        <div class="rating">
-                                                            <strong>Rating:</strong>
-                                                            <span>☆</span>
-                                                            <span>☆</span>
-                                                            <span>☆</span>
-                                                            <span>☆</span>
-                                                            <span>☆</span>
-                                                        </div>
-                                                    </li>
-                                                    <li><strong>Edition:</strong> First edition</li>
-                                                    <li><strong>Publisher:</strong> New York : Shaye Areheart Books, c2008</li>
-                                                </ul>
-                                            </header>
-                                            <div class="entry-content post-buttons">
-                                                <a href="#." class="btn btn-dark-gray">Place a Hold</a>
-                                                <a href="#." class="btn btn-dark-gray">View sample</a>
-                                                <a href="#." class="btn btn-dark-gray">Find Similar Titles</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="table table-bordered">
+                            <table id="loanTable" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Email</th>
+                                        <th>Phone Number</th>
+                                        <th>Address</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Watch Detail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% loans.forEach(function(loan) { %>
+                                        <tr>
+                                            <td>
+                                                <%= loan.id %>
+                                            </td>
+                                            <td>
+                                                <%= loan.email %>
+                                            </td>
+                                            <td>
+                                                <%= loan.phoneNumber %>
+                                            </td>
+                                            <td>
+                                                <%= loan.address %>
+                                            </td>
+                                            <td>
+                                                <%= loan.firstName %>
+                                            </td>
+                                            <td>
+                                                <%= loan.lastName %>
+                                            </td>
+                                            <td>
+                                                <button type="button"
+                                                    id="watchDetailButton_<%= loan.id %>">Detail</button>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </main>
         </div>
     </div>
-    <!-- End: Products Section -->
+    <!-- End: loan slips Section -->
 
     <!-- Start: Social Network -->
     <section class="social-network section-padding">
@@ -367,43 +308,43 @@
                 <li>
                     <a class="facebook" href="#" target="_blank">
                         <span>
-                                <i class="fa fa-facebook-f"></i>
-                            </span>
+                            <i class="fa fa-facebook-f"></i>
+                        </span>
                     </a>
                 </li>
                 <li>
                     <a class="twitter" href="#" target="_blank">
                         <span>
-                                <i class="fa fa-twitter"></i>
-                            </span>
+                            <i class="fa fa-twitter"></i>
+                        </span>
                     </a>
                 </li>
                 <li>
                     <a class="google" href="#" target="_blank">
                         <span>
-                                <i class="fa fa-google-plus"></i>
-                            </span>
+                            <i class="fa fa-google-plus"></i>
+                        </span>
                     </a>
                 </li>
                 <li>
                     <a class="rss" href="#" target="_blank">
                         <span>
-                                <i class="fa fa-rss"></i>
-                            </span>
+                            <i class="fa fa-rss"></i>
+                        </span>
                     </a>
                 </li>
                 <li>
                     <a class="linkedin" href="#" target="_blank">
                         <span>
-                                <i class="fa fa-linkedin"></i>
-                            </span>
+                            <i class="fa fa-linkedin"></i>
+                        </span>
                     </a>
                 </li>
                 <li>
                     <a class="youtube" href="#" target="_blank">
                         <span>
-                                <i class="fa fa-youtube"></i>
-                            </span>
+                            <i class="fa fa-youtube"></i>
+                        </span>
                     </a>
                 </li>
             </ul>
@@ -421,22 +362,23 @@
                             <h3 class="footer-widget-title">About Libraria</h3>
                             <span class="underline left"></span>
                             <div class="textwidget">
-                                It is a long established fact that a reader will be distracted by the readable content of a page when looking.
+                                It is a long established fact that a reader will be distracted by the readable content
+                                of a page when looking.
                             </div>
                             <address>
-                                    <div class="info">
-                                        <i class="fa fa-location-arrow"></i>
-                                        <span>21 King Street, Melbourne, Victoria 3000 Australia</span>
-                                    </div>
-                                    <div class="info">
-                                        <i class="fa fa-envelope"></i>
-                                        <span><a href="mailto:support@libraria.com">support@libraria.com</a></span>
-                                    </div>
-                                    <div class="info">
-                                        <i class="fa fa-phone"></i>
-                                        <span><a href="tel:012-345-6789">+ 012-345-6789</a></span>
-                                    </div>
-                                </address>
+                                <div class="info">
+                                    <i class="fa fa-location-arrow"></i>
+                                    <span>21 King Street, Melbourne, Victoria 3000 Australia</span>
+                                </div>
+                                <div class="info">
+                                    <i class="fa fa-envelope"></i>
+                                    <span><a href="mailto:support@libraria.com">support@libraria.com</a></span>
+                                </div>
+                                <div class="info">
+                                    <i class="fa fa-phone"></i>
+                                    <span><a href="tel:012-345-6789">+ 012-345-6789</a></span>
+                                </div>
+                            </address>
                         </div>
                     </div>
                     <div class="col-md-2 col-sm-6 widget-container">
@@ -487,11 +429,13 @@
                             <div id="twitter-feed">
                                 <ul>
                                     <li>
-                                        <p><a href="#">@TemplateLibraria</a> Sed ut perspiciatis unde omnis iste natus error sit voluptatem. <a href="#">template-libraria.com</a>
+                                        <p><a href="#">@TemplateLibraria</a> Sed ut perspiciatis unde omnis iste natus
+                                            error sit voluptatem. <a href="#">template-libraria.com</a>
                                         </p>
                                     </li>
                                     <li>
-                                        <p><a href="#">@TemplateLibraria</a> Sed ut perspiciatis unde omnis iste natus error sit voluptatem. <a href="#">template-libraria.com</a>
+                                        <p><a href="#">@TemplateLibraria</a> Sed ut perspiciatis unde omnis iste natus
+                                            error sit voluptatem. <a href="#">template-libraria.com</a>
                                         </p>
                                     </li>
                                 </ul>
@@ -585,16 +529,78 @@
     <!-- Custom Scripts -->
     <script type="text/javascript" src="/js/main.js"></script>
 
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#loanTable').DataTable();
+        });
+    </script>
 </body>
+
 </html>
+
+<script type="application/json" id="loanData">
+    <%- JSON.stringify(loans) %>
+</script>
 
 <script>
     function toggleForm() {
         var form = document.getElementById("loanForm");
         if (form.style.display === "none") {
-          form.style.display = "block";
+            form.style.display = "block";
         } else {
-          form.style.display = "none";
+            form.style.display = "none";
         }
-      }
+    }
+
+    const loans = JSON.parse(document.getElementById("loanData").textContent);
+    document.addEventListener("DOMContentLoaded", function () {
+        loans.forEach(function (loan) {
+            document.getElementById("watchDetailButton_" + loan.id).addEventListener("click", function () {
+                window.location.href = "/detailLoan/" + loan.id;
+            });
+        });
+    });
+
+    async function submitLoanForm(event) {
+        event.preventDefault();
+
+        const form = document.getElementById('loanForm');
+        const formData = new FormData(form);
+        const data = {
+            email: formData.get('email'),
+            phoneNumber: formData.get('phoneNumber'),
+            address: formData.get('address'),
+            firstName: formData.get('firstName'),
+            lastName: formData.get('lastName')
+        };
+
+        try {
+            const response = await fetch('/loan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                showErrorDialog(errorData.error);
+            } else {
+                window.location.href = '/addDetailLoan';
+            }
+        } catch (error) {
+            console.error('Error submitting loan form:', error);
+            showErrorDialog('An unexpected error occurred. Please try again later.');
+        }
+    }
+
+    function showErrorDialog(message) {
+        alert(message); // Thay thế alert bằng dialog tùy chỉnh nếu cần
+    }
 </script>

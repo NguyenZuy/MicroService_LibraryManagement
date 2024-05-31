@@ -37,7 +37,7 @@ public class LoanSlipController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<List<LoanSlip>> AddLoanSlip(@RequestBody LoanSlip loanSlip) {
+    public ResponseEntity<LoanSlip> AddLoanSlip(@RequestBody LoanSlip loanSlip) {
         return loanSlipService.addLoanSlip(loanSlip);
     }
 

@@ -19,12 +19,17 @@ public class DetailImportSlipController {
     DetailImportSlipService detailOrderSlipService;
 
     @GetMapping("getAll")
-    public ResponseEntity<List<DetailImportSlipDto>> GetAllDetailOrderSlip() {
+    public ResponseEntity<List<DetailImportSlipDto>> GetAllDetailImportSlip() {
         return detailOrderSlipService.GetAllDetailSlip();
     }
 
+    @GetMapping("getByImportId/{id}")
+    public ResponseEntity<List<DetailImportSlipDto>> GetDetailImportSlip(@PathVariable Integer id) {
+        return detailOrderSlipService.GetDetailByImportId(id);
+    }
+
     @PostMapping("add")
-    public ResponseEntity<List<DetailImportSlip>> AddDetailOrderSlip
+    public ResponseEntity<String> AddDetailImportSlip
             (@RequestBody DetailImportSlipDto DetailImportSlipDto) {
         return detailOrderSlipService.AddDetailSlip(DetailImportSlipDto);
     }

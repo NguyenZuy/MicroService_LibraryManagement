@@ -17,7 +17,7 @@ public interface BookServiceFeignInterface {
     @GetMapping("book/getIdBookByTitle/{title}")
     ResponseEntity<String> getIdBookByTitle(@PathVariable String title);
 
-    @PutMapping("book/updateBookQuantity/{id}/{quantity}")
+    @PutMapping("book/importNewBook/{id}/{quantity}")
     ResponseEntity<String> updateBookQuantity(@PathVariable String id, @PathVariable Integer quantity);
 
     @GetMapping("book/getBookTitleById/{id}")

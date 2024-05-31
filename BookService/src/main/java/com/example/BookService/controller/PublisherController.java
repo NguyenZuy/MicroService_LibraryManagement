@@ -16,7 +16,7 @@ public class PublisherController {
     @Autowired
     private PublisherService publisherService;
 
-    @PostMapping
+    @PostMapping("add")
     public ResponseEntity<List<Publisher>> addPublisher(@RequestBody Publisher publisher) {
         return publisherService.addPublisher(publisher);
     }
@@ -26,7 +26,7 @@ public class PublisherController {
         return publisherService.deletePublisher(publisher);
     }
 
-    @PutMapping
+    @PutMapping("update")
     public ResponseEntity<List<Publisher>> updatePublisher(@RequestBody Publisher publisher) {
         return publisherService.updatePublisher(publisher);
     }

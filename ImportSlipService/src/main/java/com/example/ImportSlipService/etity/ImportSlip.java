@@ -19,14 +19,17 @@ public class ImportSlip {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "order_date")
-    private Date orderDate;
+    @Column(name = "import_date")
+    private Date importDate;
 
     @Column(name = "staff_account")
     private String staffAccount;
 
     @Column(name = "id_supplier")
     private Integer idSupplier;
+
+    @Column(name = "id_order_slip")
+    private Integer idOrderSlip;
 
     @OneToMany(mappedBy = "importSlip", cascade = CascadeType.ALL)
     private Set<DetailImportSlip> detailImportSlips;

@@ -27,4 +27,7 @@ public class Supplier {
 
     @Column(name = "address")
     private String address;
+
+    @Column(name = "status")
+    private String status;
 }

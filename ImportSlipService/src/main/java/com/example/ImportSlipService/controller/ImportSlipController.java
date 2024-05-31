@@ -1,5 +1,6 @@
 package com.example.ImportSlipService.controller;
 
+import com.example.ImportSlipService.dto.ImportSlipDto;
 import com.example.ImportSlipService.etity.ImportSlip;
 import com.example.ImportSlipService.service.ImportSlipService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +18,18 @@ public class ImportSlipController {
     ImportSlipService importSlipService;
 
     @GetMapping("getAll")
-    public ResponseEntity<List<ImportSlip>> GetAllImportSlip() {
+    public ResponseEntity<List<ImportSlipDto>> GetAllImportSlip() {
         return importSlipService.GetAllSlip();
     }
 
     @PostMapping("getById/{id}")
-    public ResponseEntity<Optional<ImportSlip>> GetImportSlipById(@PathVariable Integer id) {
+    public ResponseEntity<ImportSlipDto> GetImportSlipById(@PathVariable Integer id) {
         return importSlipService.GetSlipById(id);
     }
 
     @PostMapping("add")
-    public ResponseEntity<List<ImportSlip>> AddImportSlip(@RequestBody ImportSlip ImportSlip) {
-        return importSlipService.addImportSlip(ImportSlip);
+    public ResponseEntity<ImportSlipDto> AddImportSlip(@RequestBody ImportSlipDto importSlipDto) {
+        return importSlipService.addImportSlip(importSlipDto);
     }
 
     @PutMapping("update")

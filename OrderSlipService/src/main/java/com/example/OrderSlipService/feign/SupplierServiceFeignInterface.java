@@ -17,5 +17,5 @@ public interface SupplierServiceFeignInterface {
     public ResponseEntity<Integer> getIdSupplierByName(@PathVariable String Name);
 
     @GetMapping("supplier/getSupplierNameById/{id}")
-    public ResponseEntity<String> getSupplierNameById(@PathVariable String id);
+    public ResponseEntity<String> getSupplierNameById(@PathVariable Integer id);
 }

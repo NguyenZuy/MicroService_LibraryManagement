@@ -52,9 +52,6 @@ public class DetailReturnSlipService {
             detailReturnSlip.setBookId(bookId);
 
             // Update book available quantity
-            String updateQuantityResult = UpdateBookAvailableQuantity(bookId, detailReturnSlipDto.getQuantity()).getBody();
-            if (!Objects.equals(updateQuantityResult, "Update book available quantity successful"))
-                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
             detailReturnSlip.setQuantity(detailReturnSlipDto.getQuantity());
 
             // Add dates
@@ -62,6 +59,11 @@ public class DetailReturnSlipService {
             detailReturnSlip.setReturnDate(detailReturnSlipDto.getReturnDate());
 
             detailReturnSlipDao.save(detailReturnSlip);
+
+            String updateQuantityResult = UpdateBookAvailableQuantity(bookId, detailReturnSlipDto.getQuantity()).getBody();
+            if (!Objects.equals(updateQuantityResult, "Update book available quantity successful"))
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+
             List<DetailReturnSlip> slipsRs = detailReturnSlipDao.findAll();
             return new ResponseEntity<>(slipsRs, HttpStatus.OK);
         } catch (Exception e) {
@@ -82,6 +84,26 @@ public class DetailReturnSlipService {
                 ReturnSlipDto.setBorrowDate(slip.getBorrowDate());
                 ReturnSlipDto.setReturnDate(slip.getReturnDate());
                 detailReturnSlipDtos.add(ReturnSlipDto);
+            }
+            return new ResponseEntity<>(detailReturnSlipDtos, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public ResponseEntity<List<DetailReturnSlipDto>> GetDetailSlipByReturnId(int id){
+        try {
+            List<DetailReturnSlip> slipsRs = detailReturnSlipDao.findByReturnSlip_Id(id);
+            List<DetailReturnSlipDto> detailReturnSlipDtos = new ArrayList<>();
+            for (var slip : slipsRs) {
+                DetailReturnSlipDto loanSlipDto = new DetailReturnSlipDto();
+                loanSlipDto.setReturnSlipId(slip.getReturnSlip().getId());
+                loanSlipDto.setBookName(GetBookTitleById(slip.getBookId()).getBody());
+                loanSlipDto.setQuantity(slip.getQuantity());
+                loanSlipDto.setBorrowDate(slip.getBorrowDate());
+                loanSlipDto.setReturnDate(slip.getReturnDate());
+                detailReturnSlipDtos.add(loanSlipDto);
             }
             return new ResponseEntity<>(detailReturnSlipDtos, HttpStatus.OK);
         } catch (Exception e) {

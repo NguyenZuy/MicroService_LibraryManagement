@@ -23,7 +23,7 @@ public class DetailOrderSlipController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<List<DetailOrderSlip>> AddDetailOrderSlip
+    public ResponseEntity<DetailOrderSlipDto> AddDetailOrderSlip
             (@RequestBody DetailOrderSlipDto detailOrderSlipDto) {
         return detailOrderSlipService.AddDetailSlip(detailOrderSlipDto);
     }
@@ -37,6 +37,16 @@ public class DetailOrderSlipController {
     @GetMapping("findBookId/{title}")
     public ResponseEntity<String> GetBookId(@PathVariable String title) {
         return detailOrderSlipService.GetBookIdByTitle(title);
+    }
+
+    @GetMapping("findByOrderId/{id}")
+    public ResponseEntity<List<DetailOrderSlipDto>> GetByOrderId(@PathVariable Integer id) {
+        return detailOrderSlipService.GetByOrderId(id);
+    }
+
+    @PutMapping("updateStatus/{id}/{bookName}")
+    public ResponseEntity<String> UpdateStatus(@PathVariable Integer id, @PathVariable String bookName) {
+        return detailOrderSlipService.UpdateDetailSlipStatus(id, bookName);
     }
 
     // Feign supplier

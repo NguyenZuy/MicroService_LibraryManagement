@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 public class BookDto {
     private String id;
-    private byte[] image;
+    private String image;
     private String title;
     private String authorName;
     private Integer inventoryQuantity;
@@ -16,4 +16,5 @@ public class BookDto {
     private Integer availableQuantity;
     private String publisherName;
     private String categoryName;
+    private String status;
 }

@@ -11,4 +11,6 @@ public interface SupplierDao extends JpaRepository<Supplier, String> {
     boolean existsById(Integer id);
 
     Supplier findByName(String name);
+
+    List<Supplier> findByStatus(String active);
 }

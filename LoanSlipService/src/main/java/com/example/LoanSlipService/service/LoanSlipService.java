@@ -52,15 +52,14 @@ public class LoanSlipService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public ResponseEntity<List<LoanSlip>> addLoanSlip(LoanSlip loanSlip) {
+    public ResponseEntity<LoanSlip> addLoanSlip(LoanSlip loanSlip) {
         try {
             loanSlipDao.save(loanSlip);
-            List<LoanSlip> slipsRs = loanSlipDao.findAll();
-            return new ResponseEntity<>(slipsRs, HttpStatus.OK);
+            return new ResponseEntity<>(loanSlip, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public ResponseEntity<List<LoanSlip>> deleteLoanSlip(LoanSlip loanSlip) {

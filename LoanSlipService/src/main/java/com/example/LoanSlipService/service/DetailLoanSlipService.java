@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +37,6 @@ public class DetailLoanSlipService {
 
             // Get book id by title
             String bookId = GetBookIdByTitle(detailLoanSlipDto.getBookName()).getBody();
-            System.out.println(bookId);
 
             // Set primary key
             DetailLoanSlipPK detailLoanSlipPK = new DetailLoanSlipPK();
@@ -61,6 +61,9 @@ public class DetailLoanSlipService {
             detailLoanSlip.setBorrowDate(detailLoanSlipDto.getBorrowDate());
             detailLoanSlip.setReturnDate(detailLoanSlipDto.getReturnDate());
 
+            // Add status
+            detailLoanSlip.setStatus(detailLoanSlipDto.getStatus());
+
             detailLoanSlipDao.save(detailLoanSlip);
             List<DetailLoanSlip> slipsRs = detailLoanSlipDao.findAll();
             return new ResponseEntity<>(slipsRs, HttpStatus.OK);
@@ -81,6 +84,7 @@ public class DetailLoanSlipService {
                 loanSlipDto.setQuantity(slip.getQuantity());
                 loanSlipDto.setBorrowDate(slip.getBorrowDate());
                 loanSlipDto.setReturnDate(slip.getReturnDate());
+                loanSlipDto.setStatus(slip.getStatus());
                 detailLoanSlipDtos.add(loanSlipDto);
             }
             return new ResponseEntity<>(detailLoanSlipDtos, HttpStatus.OK);
@@ -88,6 +92,53 @@ public class DetailLoanSlipService {
             e.printStackTrace();
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public ResponseEntity<List<DetailLoanSlipDto>> GetDetailSlipByLoanId(int id){
+        try {
+            List<DetailLoanSlip> slipsRs = detailLoanSlipDao.findByLoanSlip_Id(id);
+            List<DetailLoanSlipDto> detailLoanSlipDtos = new ArrayList<>();
+            for (var slip : slipsRs) {
+                DetailLoanSlipDto loanSlipDto = new DetailLoanSlipDto();
+                loanSlipDto.setLoanSlipId(slip.getLoanSlip().getId());
+                loanSlipDto.setBookName(GetBookTitleById(slip.getBookId()).getBody());
+                loanSlipDto.setQuantity(slip.getQuantity());
+                loanSlipDto.setBorrowDate(slip.getBorrowDate());
+                loanSlipDto.setReturnDate(slip.getReturnDate());
+                loanSlipDto.setStatus(slip.getStatus());
+                detailLoanSlipDtos.add(loanSlipDto);
+            }
+            return new ResponseEntity<>(detailLoanSlipDtos, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public ResponseEntity<DetailLoanSlip> UpdateDetailSlipStatus(int id, String bookName){
+        try {
+            // Get book id by name
+            String bookId = GetBookIdByTitle(bookName).getBody();
+            System.out.println(bookId);
+
+            DetailLoanSlipPK detailLoanSlipPK = new DetailLoanSlipPK();
+            detailLoanSlipPK.setId_loan_slip(id);
+            detailLoanSlipPK.setId_book(bookId);
+
+            Optional<DetailLoanSlip> detailLoanSlipOptional = detailLoanSlipDao.findById(detailLoanSlipPK);
+
+            if(detailLoanSlipOptional.isPresent()){
+                DetailLoanSlip detailLoanSlip = detailLoanSlipOptional.get();
+                detailLoanSlip.setStatus("Returned");
+                detailLoanSlipDao.save(detailLoanSlip);
+                return new ResponseEntity<>(detailLoanSlip, HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // Feign

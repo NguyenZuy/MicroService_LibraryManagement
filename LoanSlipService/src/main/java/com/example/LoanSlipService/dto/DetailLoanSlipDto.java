@@ -15,4 +15,5 @@ public class DetailLoanSlipDto {
     private Integer quantity;
     private Date borrowDate;
     private Date returnDate;
+    private String status;
 }

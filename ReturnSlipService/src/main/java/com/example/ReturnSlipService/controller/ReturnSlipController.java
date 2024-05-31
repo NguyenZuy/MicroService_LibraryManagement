@@ -38,7 +38,7 @@ public class ReturnSlipController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<List<ReturnSlip>> AddReturnSlip(@RequestBody ReturnSlip ReturnSlip) {
+    public ResponseEntity<ReturnSlip> AddReturnSlip(@RequestBody ReturnSlip ReturnSlip) {
         return ReturnSlipService.addReturnSlip(ReturnSlip);
     }
 

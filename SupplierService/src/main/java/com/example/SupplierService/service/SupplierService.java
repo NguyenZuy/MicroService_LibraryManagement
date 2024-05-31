@@ -82,11 +82,25 @@ public class SupplierService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    public ResponseEntity<List<Supplier>> getActiveSuppliers(){
+        try {
+            List<Supplier> Suppliers = SupplierDao.findByStatus("Active");
+            return new ResponseEntity<>(Suppliers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     // Feign
     public ResponseEntity<List<Supplier>> getSuppliersForLoan() {
-        List<Supplier> Suppliers = SupplierDao.findAll();
-        
-        return new ResponseEntity<>(Suppliers, HttpStatus.OK);
+        try {
+            List<Supplier> Suppliers = SupplierDao.findByStatus("Active");
+            return new ResponseEntity<>(Suppliers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public ResponseEntity<Integer> getIdSupplierByName(String name) {

@@ -40,6 +40,9 @@ public class ReturnSlip {
     @Column(name = "staff_account")
     private String staffAccount;
 
+    @Column(name = "loan_id")
+    private Integer loanId;
+
     @OneToMany(mappedBy = "returnSlip", fetch = FetchType.LAZY)
     private List<DetailReturnSlip> detailReturnSlips;
 }
