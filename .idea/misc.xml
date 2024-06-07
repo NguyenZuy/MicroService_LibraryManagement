@@ -8,10 +8,18 @@
         <option value="$PROJECT_DIR$/api-gateway/pom.xml" />
         <option value="$PROJECT_DIR$/eureka-server/pom.xml" />
         <option value="$PROJECT_DIR$/service-registry/pom.xml" />
+        <option value="$PROJECT_DIR$/ServiceRegistry/pom.xml" />
+        <option value="$PROJECT_DIR$/ApiGateway/pom.xml" />
+        <option value="$PROJECT_DIR$/BookService/pom.xml" />
+        <option value="$PROJECT_DIR$/ImportSlipService/pom.xml" />
+        <option value="$PROJECT_DIR$/LoanSlipService/pom.xml" />
+        <option value="$PROJECT_DIR$/OrderSlipService/pom.xml" />
+        <option value="$PROJECT_DIR$/ReturnSlipService/pom.xml" />
+        <option value="$PROJECT_DIR$/SupplierService/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="corretto-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

@@ -7,9 +7,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="api-gateway" />
-        <module name="service-registry" />
+        <module name="SupplierService" />
+        <module name="ReturnSlipService" />
         <module name="BooksService" />
+        <module name="api-gateway" />
+        <module name="BookService" />
+        <module name="ServiceRegistry" />
+        <module name="OrderSlipService" />
+        <module name="service-registry" />
+        <module name="ApiGateway" />
+        <module name="LoanSlipService" />
+        <module name="ImportSlipService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -18,7 +26,15 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ApiGateway" options="-parameters" />
+      <module name="BookService" options="-parameters" />
       <module name="BooksService" options="-parameters" />
+      <module name="ImportSlipService" options="-parameters" />
+      <module name="LoanSlipService" options="-parameters" />
+      <module name="OrderSlipService" options="-parameters" />
+      <module name="ReturnSlipService" options="-parameters" />
+      <module name="ServiceRegistry" options="-parameters" />
+      <module name="SupplierService" options="-parameters" />
       <module name="api-gateway" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="service-registry" options="-parameters" />
