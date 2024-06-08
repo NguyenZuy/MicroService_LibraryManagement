@@ -18,12 +18,12 @@ public class DataManager {
     private static DataManager instance;
 
     public String username;
-    private Book[] books;
-    public Book[] booksFilter;
-    public Receipt[] receipts;
-    public Receipt[] ReceiptsFillter;
+    private Book[] books = new Book[0];
+    public Book[] booksFilter = new Book[0];
+    public Receipt[] receipts = new Receipt[0];
+    public Receipt[] ReceiptsFillter = new Receipt[0];
 
-    public Category[] categories;
+    public Category[] categories = new Category[0];
 
 
     public List<Book> booksSelect = new ArrayList<>();
@@ -41,41 +41,14 @@ public class DataManager {
         return instance;
     }
 
-    public Book getBookByID(String id){
+    public Book getBookByID(String id) {
         for (Book book : books) {
-            if(book.id.equals(id)){
+            if (book.id.equals(id)) {
                 return book;
             }
         }
         return null;
     }
-//    public Receipt getReceiptByID(String id) {
-//        // Kiểm tra nếu danh sách sách là null hoặc rỗng, trả về null
-//        if (books == null || books.length == 0) {
-//            return null;
-//        }
-//
-//        // Duyệt qua từng sách trong danh sách
-//        for (Book book : books) {
-//            // Tách các ID sách từ chuỗi id_books bằng dấu phẩy
-//            String[] bookIDs = book.getId().split(",");
-//
-//            // Duyệt qua từng ID sách trong danh sách ID của sách hiện tại
-//            for (String bookID : bookIDs) {
-//                // Loại bỏ khoảng trắng và dấu nháy đơn từ ID sách
-//                String trimmedBookID = bookID.trim().replaceAll("'", "");
-//
-//                // So sánh ID sách hiện tại với ID được truyền vào
-//                if (trimmedBookID.equals(id)) {
-//                    // Nếu tìm thấy ID sách trùng khớp, trả về đối tượng sách
-//                    return receipt;
-//                }
-//            }
-//        }
-//
-//        // Nếu không tìm thấy ID sách trong danh sách ID của sách nào, trả về null
-//        return null;
-//    }
 
 
     public void UpdateData(DataResponse dataResponse){

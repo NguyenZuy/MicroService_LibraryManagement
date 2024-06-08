@@ -26,9 +26,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project.DataManager;
+import com.example.project.NewDataManager;
 import com.example.project.R;
 import com.example.project.entities.Book;
 import com.example.project.entities.DataResponse;
+import com.example.project.entities.NewBook;
 import com.example.project.entities.Receipt;
 import com.example.project.network.SocketEventListener;
 import com.example.project.network.WebSocketClient;
@@ -255,7 +257,8 @@ public class DetailOrderActivity extends AppCompatActivity implements SocketEven
 
         ListView listView = findViewById(R.id.list_item_book);
         CustomBookAdapter adapter = new CustomBookAdapter(this, R.layout.list_item_book, false);
-        Book[] books = DataManager.getInstance().getBooksSelect().toArray(new Book[0]);
+        //Book[] books = DataManager.getInstance().getBooksSelect().toArray(new Book[0]);
+        NewBook[] books = NewDataManager.getInstance().booksSelect.toArray(new NewBook[0]);
         adapter.addAll(books); // Pass the array of Book objects to the adapter
 
         listView.setAdapter(adapter);

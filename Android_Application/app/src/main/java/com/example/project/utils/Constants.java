@@ -2,10 +2,10 @@ package com.example.project.utils;
 
 public class Constants {
     // main ipc final String SERVER_URL = "ws://192.168.1.11:3500"; // Replace with your server IP or hostname
-    public static final String SERVER_URL = "ws://172.20.10.4:3500"; // Replace with your server IP or hostname
+    public static final String SERVER_URL = "http://192.168.0.112:9191"; // Replace with your server IP or hostname
 
     // events handlers
-    public static final String EVENT_LOGIN = "login";a
+    public static final String EVENT_LOGIN = "login";
     public static final String EVENT_GET_DATA = "getData";
     public static final String EVENT_ORDER = "order";
     public static final String EVENT_ADD_BOOK = "addBook";
