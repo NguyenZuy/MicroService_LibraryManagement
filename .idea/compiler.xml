@@ -7,18 +7,41 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="api-gateway" />
-        <module name="service-registry" />
+        <module name="SupplierService" />
+        <module name="UserSrvice" />
+        <module name="ReturnSlipService" />
+        <module name="UserService" />
         <module name="BooksService" />
+        <module name="ApiGateway" />
+        <module name="ImportSlipService" />
+        <module name="api-gateway" />
+        <module name="BookService" />
+        <module name="ServiceRegistry" />
+        <module name="OrderSlipService" />
+        <module name="service-registry" />
+        <module name="LoanSlipService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="AserService" target="17" />
       <module name="eureka-server" target="17" />
+      <module name="UserSrvice" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ApiGateway" options="-parameters" />
+      <module name="AserService" options="-parameters" />
+      <module name="BookService" options="-parameters" />
       <module name="BooksService" options="-parameters" />
+      <module name="ImportSlipService" options="-parameters" />
+      <module name="LoanSlipService" options="-parameters" />
+      <module name="OrderSlipService" options="-parameters" />
+      <module name="ReturnSlipService" options="-parameters" />
+      <module name="ServiceRegistry" options="-parameters" />
+      <module name="SupplierService" options="-parameters" />
+      <module name="UserService" options="-parameters" />
+      <module name="UserSrvice" options="-parameters" />
       <module name="api-gateway" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="service-registry" options="-parameters" />
