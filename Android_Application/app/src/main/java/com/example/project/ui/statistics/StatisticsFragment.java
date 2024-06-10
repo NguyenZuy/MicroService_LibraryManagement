@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.project.databinding.FragmentDashboardBinding;
-import com.example.project.ui.BookStatistics;
 
 public class StatisticsFragment extends Fragment {
 
@@ -21,8 +20,8 @@ public class StatisticsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         // Khởi tạo Intent để mở BookStatistics Activity
-        Intent intent = new Intent(getActivity(), BookStatistics.class);
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), BookStatistics.class);
+//        startActivity(intent);
 
         // Trả về null vì không có giao diện để hiển thị
         return null;

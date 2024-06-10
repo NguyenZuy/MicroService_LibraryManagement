@@ -73,8 +73,12 @@ public class OrderSlipService {
             orderSlip.setStaffAccount(orderSlipDto.getStaffAccount());
             orderSlip.setIdSupplier(GetSupplierIdByName(orderSlipDto.getSupplierName()).getBody());
 
-            orderSlipDao.save(orderSlip);
-            orderSlipDto.setId(orderSlip.getId());
+            OrderSlip orderSlipTemp = orderSlipDao.save(orderSlip);
+            // In ra thông tin đối tượng sau khi lưu
+            System.out.println("After saving: " + orderSlipTemp.getId());
+            orderSlipDto.setId(orderSlipTemp.getId());
+
+            System.out.println(orderSlipDto.getId());
             return new ResponseEntity<>(orderSlipDto, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

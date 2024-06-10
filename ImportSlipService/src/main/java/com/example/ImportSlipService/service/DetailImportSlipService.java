@@ -59,14 +59,14 @@ public class DetailImportSlipService {
             // Update book available quantity
             String updateQuantityResult = UpdateBookQuantity(bookId, detailImportSlipDto.getQuantity()).getBody();
             if (!Objects.equals(updateQuantityResult, "Update book quantity successful"))
-                return new ResponseEntity<>("Error update book quantity", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
             List<DetailImportSlip> slipsRs = detailImportSlipDao.findAll();
-            return new ResponseEntity<>("Success!", HttpStatus.OK);
+            return new ResponseEntity<>("OK", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>("Server error", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public ResponseEntity<List<DetailImportSlipDto>> GetAllDetailSlip() {

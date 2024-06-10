@@ -475,17 +475,17 @@ app.get('/signin', async(req, res) => {
             // Get loan slip id
             const id = responseAddLoan.data.id;
 
-            // Get each row
-            for (let i = 0; i < bookNames.length; i++) {
-                const detailLoanSlip = {
-                    loanSlipId: id,
-                    bookName: bookNames[i],
-                    quantity: quantities[i],
-                    borrowDate: borrowDates[i],
-                    returnDate: returnDates[i],
-                    status: "Not Return"
-                };
-                // console.log(detailLoanSlip);
+      // Get each row
+      for (let i = 0; i < bookNames.length; i++) {
+        const detailLoanSlip = {
+          loanSlipId: id,
+          bookName: bookNames[i],
+          quantity: quantities[i],
+          borrowDate: borrowDates[i],
+          returnDate: returnDates[i],
+          status: "Not Return"
+        };
+        // console.log(detailLoanSlip);
 
                 const responseAddDetailLoan = await axios.post('http://localhost:9191/detailLoanSlip/add', detailLoanSlip);
 

@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private SubFragmentAdapter subFragmentAdapter;
     EditText searchEditText;
-    ImageButton btn_remove;
+//    ImageButton btn_remove;
     Button searchButton;
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -55,10 +55,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        ImageButton btnScan = binding.btnScan;
-        btnScan.setOnClickListener(v -> {
-            scanCode();
-        });
 
         // Initialize TabLayout and ViewPager
         tabLayout = binding.tabLayout;
@@ -73,12 +69,12 @@ public class HomeFragment extends Fragment {
                 getResources().getColorStateList(R.color.main).getDefaultColor()
         );
 
-        binding.myButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(requireContext(), DetailOrderActivity.class));
-            }
-        });
+//        binding.myButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(requireContext(), DetailOrderActivity.class));
+//            }
+//        });
 
         // Optional: Set a listener to handle tab selection events
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -100,15 +96,15 @@ public class HomeFragment extends Fragment {
         });
 
         searchEditText = binding.searchEditText;
-        btn_remove = binding.btnRemove;
+//        btn_remove = binding.btnRemove;
         searchButton = binding.searchButton;
-        btn_remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchEditText.setText("");
-                btn_remove.setVisibility(View.GONE);
-            }
-        });
+//        btn_remove.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                searchEditText.setText("");
+//                btn_remove.setVisibility(View.GONE);
+//            }
+//        });
 
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -128,17 +124,17 @@ public class HomeFragment extends Fragment {
 
         });
 
-        searchEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    btn_remove.setVisibility(View.VISIBLE);
-
-                } else {
-                    btn_remove.setVisibility(View.GONE);
-                }
-            }
-        });
+//        searchEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    btn_remove.setVisibility(View.VISIBLE);
+//
+//                } else {
+//                    btn_remove.setVisibility(View.GONE);
+//                }
+//            }
+//        });
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,22 +172,4 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-    void scanCode(){
-        ScanOptions options = new ScanOptions();
-        options.setPrompt("Volume up to flash on");
-        options.setBeepEnabled(true);
-        options.setOrientationLocked(true);
-        options.setCaptureActivity(CaptureAct.class);
-        barLaucher.launch(options);
-    }
-
-    ActivityResultLauncher<ScanOptions> barLaucher = registerForActivityResult(new ScanContract(), result -> {
-        if(result.getContents() != null){
-            Book book = DataManager.getInstance().getBookByID(result.getContents());
-            System.out.println("scan " +result.getContents());
-            DataManager.getInstance().addBookSelect(book);
-            binding.myButton.setText("Check Out +" + DataManager.getInstance().getBooksSelect().size());
-        }
-    });
 }

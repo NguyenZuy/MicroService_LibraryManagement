@@ -62,11 +62,11 @@ public class NotesFragment extends Fragment {
                 getResources().getColorStateList(R.color.main).getDefaultColor()
         );
 
-        ImageButton btnScan = binding.btnScanReturn;
-        btnScan.setOnClickListener(v -> {
-            scanCode();
-
-        });
+//        ImageButton btnScan = binding.btnScanReturn;
+//        btnScan.setOnClickListener(v -> {
+//            scanCode();
+//
+//        });
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

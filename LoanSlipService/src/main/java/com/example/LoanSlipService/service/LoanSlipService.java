@@ -54,8 +54,9 @@ public class LoanSlipService {
 
     public ResponseEntity<LoanSlip> addLoanSlip(LoanSlip loanSlip) {
         try {
-            loanSlipDao.save(loanSlip);
-            return new ResponseEntity<>(loanSlip, HttpStatus.OK);
+            LoanSlip savedLoanSlip = loanSlipDao.save(loanSlip);
+            System.out.println(savedLoanSlip.getId());
+            return new ResponseEntity<>(savedLoanSlip, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }

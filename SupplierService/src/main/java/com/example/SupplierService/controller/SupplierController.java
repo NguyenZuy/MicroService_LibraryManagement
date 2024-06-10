@@ -46,7 +46,7 @@ public class SupplierController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<List<Supplier>> updateSupplier(@RequestBody Supplier supplier) {
+    public ResponseEntity<Supplier> updateSupplier(@RequestBody Supplier supplier) {
         return SupplierService.updateSupplier(supplier);
     }
 

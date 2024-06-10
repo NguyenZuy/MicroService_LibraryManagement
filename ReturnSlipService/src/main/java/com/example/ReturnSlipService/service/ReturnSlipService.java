@@ -54,8 +54,8 @@ public class ReturnSlipService {
 
     public ResponseEntity<ReturnSlip> addReturnSlip(ReturnSlip returnSlip) {
         try {
-            returnSlipDao.save(returnSlip);
-            return new ResponseEntity<>(returnSlip, HttpStatus.OK);
+            ReturnSlip saved = returnSlipDao.save(returnSlip);
+            return new ResponseEntity<>(saved, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }

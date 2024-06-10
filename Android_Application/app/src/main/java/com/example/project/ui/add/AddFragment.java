@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,14 +36,20 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.project.DataManager;
+import com.example.project.NewDataManager;
 import com.example.project.R;
 import com.example.project.databinding.FragmentAddBinding;
 import com.example.project.entities.Book;
 import com.example.project.entities.Category;
 import com.example.project.entities.CategoryResponse;
 import com.example.project.entities.DataResponse;
+import com.example.project.entities.NewBook;
+import com.example.project.entities.Publisher;
+import com.example.project.network.RestfulAPIService;
+import com.example.project.network.RetrofitClient;
 import com.example.project.network.SocketEventListener;
 import com.example.project.network.WebSocketClient;
+import com.example.project.ui.IntroActivity;
 import com.example.project.ui.MainActivity;
 import com.example.project.utils.Constants;
 import com.example.project.utils.LoadingDialog;
@@ -61,24 +68,28 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class AddFragment extends Fragment implements SocketEventListener {
+public class AddFragment extends Fragment{
 
     private FragmentAddBinding binding;
     TextView textView;
     List<String> data_lsp = new ArrayList<>();
     ArrayAdapter<String> adapter;
-    String selectedCategory, newCategory;
+    String selectedCategory;
     byte[] byteArray;
     String base64Image;
     Bitmap bitmap;
-    AlertDialog dialog;
-    Button btnAdd, btnAddCategory, btnQuitAddCategory;
-    ImageButton ibSelectImage, ibCalendar, ibAddBookCategory;
+    Button btnAdd;
+    ImageButton ibSelectImage, ibPublishDate;
     ImageView imageView;
-    TextView textView1;
-    EditText edtBookName, edtAuthorName, edtQuantity, editDateToAdd, edtSummary, edtBookId, edtBookPrice;
-    Spinner spnBookCategory;
+    EditText edtBookName, edtAuthorName, edtInventoryQuantity, edtAvailableQuantity, edtSummary, editPublishDate, edtBookId;
+    Spinner spnBookCategory, spnPublisher, spnStatus;
+    boolean imgSelected = false;
+
+    private RestfulAPIService restfulAPIService;
 
     ActivityResultLauncher<Intent> resultLauncher;
 
@@ -90,8 +101,11 @@ public class AddFragment extends Fragment implements SocketEventListener {
         binding = FragmentAddBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        restfulAPIService = RetrofitClient.getClient(Constants.SERVER_URL).create(RestfulAPIService.class);
+
         SetControl();
         registerResult();
+        fetchAndSetData();
         SetEvent();
 
         addViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
@@ -106,187 +120,90 @@ public class AddFragment extends Fragment implements SocketEventListener {
     }
 
     private void SetEvent() {
-        // Create spinner
-        CreateSpinner();
-//        adapter = new ArrayAdapter<String>(getContext(), R.layout.category_iem_spinner,data_lsp);
-//        adapter.setDropDownViewResource(R.layout.spinner_dropdown_items);
-//        spnBookCategory.setAdapter(adapter);
-
-        spnBookCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedCategory = (String) parent.getItemAtPosition(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(edtBookId.getText().toString())){
-                    Toast.makeText(getContext(), "Please enter book id", Toast.LENGTH_LONG).show();
-                }
-                if (TextUtils.isEmpty(edtBookName.getText().toString())){
-                    Toast.makeText(getContext(), "Please enter book name", Toast.LENGTH_LONG).show();
-                }
-                if (TextUtils.isEmpty(edtAuthorName.getText().toString())){
-                    Toast.makeText(getContext(), "Please enter author's name", Toast.LENGTH_LONG).show();
-                }
-                if (TextUtils.isEmpty(edtSummary.getText().toString())){
-                    Toast.makeText(getContext(), "Please enter summary", Toast.LENGTH_LONG).show();
-                }
-                if (TextUtils.isEmpty(edtQuantity.getText().toString())){
-                    Toast.makeText(getContext(), "Please enter quantity", Toast.LENGTH_LONG).show();
-                }
-                if (selectedCategory.equals("")){
-                    Toast.makeText(getContext(), "Please select category", Toast.LENGTH_LONG).show();
-                }
-                if (TextUtils.isEmpty(edtBookPrice.getText().toString())){
-                    Toast.makeText(getContext(), "Please enter book price", Toast.LENGTH_LONG).show();
-                }
-                LoadingDialog.getInstance(getContext()).show();
+                if (isInputValid()) {
+                    // Xử lý sự kiện khi tất cả các trường đều hợp lệ
+                    NewBook newBook = new NewBook();
+                    newBook.setId(edtBookId.getText().toString().trim());
+                    newBook.setTitle(edtBookName.getText().toString().trim());
+                    newBook.setAuthorName(edtAuthorName.getText().toString().trim());
+                    newBook.setSummary(edtSummary.getText().toString().trim());
+                    newBook.setInventoryQuantity(Integer.parseInt(edtInventoryQuantity.getText().toString().trim()));
+                    newBook.setAvailableQuantity(Integer.parseInt(edtAvailableQuantity.getText().toString().trim()));
+                    newBook.setCategoryName(spnBookCategory.getSelectedItem().toString());
+                    newBook.setPublisherName(spnPublisher.getSelectedItem().toString());
+                    newBook.setStatus(spnStatus.getSelectedItem().toString());
+                    newBook.setPublishDate(editPublishDate.getText().toString().trim());
+                    newBook.setImage(base64Image); // Assuming you have converted the image to base64
 
-                Gson gson = new Gson();
-                Book book = new Book();
+                    Call<List<NewBook>> call = restfulAPIService.addBook(newBook);
+                    call.enqueue(new Callback<List<NewBook>>() {
+                        @Override
+                        public void onResponse(Call<List<NewBook>> call, Response<List<NewBook>> response) {
+                            if (response.isSuccessful()) {
+                                RestfulAPIService restfulAPIService = RetrofitClient.getClient(Constants.SERVER_URL).create(RestfulAPIService.class);
+                                Call<List<NewBook>> call1 = restfulAPIService.getAllBooks();
 
-                book.setId(edtBookId.getText().toString());
-                book.setName(edtBookName.getText().toString());
-                book.setSummary(edtSummary.getText().toString());
-                book.setName_author(edtAuthorName.getText().toString());
-                book.setInventory_quantity(Integer.parseInt(edtQuantity.getText().toString()));
-                book.setCategory(selectedCategory);
-                // Convert image
-                ByteArrayOutputStream byteArrayOutputStream;
-                byteArrayOutputStream = new ByteArrayOutputStream();
-                if (bitmap != null){
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                    byteArray = byteArrayOutputStream.toByteArray();
-                    base64Image = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                    //Log.d("MyTag", base64Image);
-                }
-                book.setImage(base64Image);
+                                LoadingDialog.getInstance(getContext()).show();
+                                call1.enqueue(new Callback<List<NewBook>>() {
+                                    @Override
+                                    public void onResponse(Call<List<NewBook>> call, Response<List<NewBook>> response) {
+                                        if (response.isSuccessful()) {
+                                            List<NewBook> books = response.body();
+                                            if(books != null)
+                                                NewDataManager.getInstance().books = books;
+                                            LoadingDialog.getInstance(getContext()).hide();
+                                            startActivity(new Intent(getContext(), MainActivity.class));
+                                        }
+                                    }
 
-                EditText edit_date_from = editDateToAdd;
-                DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                String formattedDate = edit_date_from.getText().toString();
-                try {
-                    Date date = inputFormat.parse(formattedDate);
-
-                    formattedDate = outputFormat.format(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                book.setDate_add(formattedDate);
-
-                book.setPrice(Integer.parseInt(edtBookPrice.getText().toString()));
-
-                JSONObject addBookObject = new JSONObject();
-
-                try {
-                    addBookObject.put("event", Constants.EVENT_ADD_BOOK);
-                    addBookObject.put("book", gson.toJson(book));
-                    addBookObject.put("username", DataManager.getInstance().username);
-                    String mess = addBookObject.toString();
-
-                    WebSocketClient.getInstance().requestToServer(mess, AddFragment.this);
-
-                    edtBookName.setText("");
-                    edtAuthorName.setText("");
-                    edtSummary.setText("");
-                    edtQuantity.setText("");
-                    editDateToAdd.setText("");
-                    imageView.setImageDrawable(null);
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-
-            }
-        });
-        ibAddBookCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                LayoutInflater inflater = getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.dialog_add_book_category, null);
-                builder.setView(dialogView);
-
-                final EditText edtNewCategory = dialogView.findViewById(R.id.edtNewCategory);
-
-                Button addCategoryBtn = dialogView.findViewById(R.id.addCategoryBtn);
-                addCategoryBtn.setBackgroundColor(Color.GREEN);
-
-                Button quitAddCategoryBtn = dialogView.findViewById(R.id.quitAddCategoryBtn);
-                quitAddCategoryBtn.setBackgroundColor(Color.RED);
-
-                dialog = builder.create();
-
-                addCategoryBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        newCategory = edtNewCategory.getText().toString();
-                        if (!newCategory.isEmpty()) {
-
-                            Gson gson = new Gson();
-                            Category category = new Category();
-                            category.setName(newCategory);
-                            JSONObject addCategoryObject = new JSONObject();
-                            try {
-                                addCategoryObject.put("event", Constants.EVENT_ADD_CATEGORY);
-                                addCategoryObject.put("category", gson.toJson(category));
-                                addCategoryObject.put("username", DataManager.getInstance().username);
-                                String mess = addCategoryObject.toString();
-
-                                WebSocketClient.getInstance().requestToServer(mess, AddFragment.this);
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
+                                    @Override
+                                    public void onFailure(Call<List<NewBook>> call, Throwable t) {
+                                        Log.e("MainActivity", "Error: " + t.getMessage());
+                                        LoadingDialog.getInstance(getContext()).hide();
+                                    }
+                                });
+                                Toast.makeText(getContext(), "Book added successfully!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Failed to add book.", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(getContext(), "Category name cannot be empty", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
 
-                quitAddCategoryBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
+                        @Override
+                        public void onFailure(Call<List<NewBook>> call, Throwable t) {
+                            Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(getContext(), "Vui lòng điền đầy đủ thông tin và chọn các mục cần thiết.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
         ibSelectImage.setOnClickListener(view -> pickImage());
-        ibCalendar.setOnClickListener(new View.OnClickListener() {
+
+        ibPublishDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openCalendar();
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        getContext(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                                editPublishDate.setText(selectedDate);
+                            }
+                        },
+                        year, month, day);
+                datePickerDialog.show();
             }
         });
-    }
-
-    private void openCalendar(){
-        Calendar calendar = Calendar.getInstance();
-        int defaultYear = calendar.get(Calendar.YEAR);
-        int defaultMonth = calendar.get(Calendar.MONTH); // Tháng bắt đầu từ 0
-        int defaultDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-
-        DatePickerDialog dialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                editDateToAdd.setText(String.format(Locale.getDefault(), "%02d/%02d/%d", dayOfMonth, month + 1, year));
-            }
-        },
-                defaultYear, defaultMonth, defaultDay);
-
-        dialog.show();
     }
 
     private void pickImage(){
@@ -294,7 +211,7 @@ public class AddFragment extends Fragment implements SocketEventListener {
         resultLauncher.launch(intent);
     }
 
-    private  void registerResult(){
+    private void registerResult(){
         resultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -304,9 +221,10 @@ public class AddFragment extends Fragment implements SocketEventListener {
                             Uri imageUri = result.getData().getData();
 
                             bitmap = getBitmap(getActivity().getContentResolver(), imageUri);
-                            //Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-
+                            base64Image = convertBitmapToBase64(bitmap);
                             imageView.setImageBitmap(bitmap);
+                            imgSelected = true;
+                            Log.d("Base64Image", base64Image);
                         } catch (Exception e){
                             Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
                         }
@@ -317,120 +235,102 @@ public class AddFragment extends Fragment implements SocketEventListener {
 
     private  void  SetControl() {
         textView = binding.textAdd;
-        textView1 = binding.textView1;
-
-        edtBookName = binding.edtBookName;
-        edtAuthorName = binding.edtAuthorName;
-        edtQuantity = binding.edtQuantity;
-        editDateToAdd = binding.editDateToAdd;
-        edtSummary = binding.edtSummary;
-        edtBookId = binding.edtBookId;
-        edtBookPrice = binding.edtPrice;
-
-        btnAdd = binding.buttonAdd;
 
         ibSelectImage = binding.ibBookImage;
-        ibAddBookCategory = binding.addBookCategory;
-        ibCalendar = binding.ibDateToAdd;
         imageView = binding.ivBookImage;
 
-        spnBookCategory = binding.spnBookCategory;
+        edtBookId = binding.edtBookId;
+        edtBookName = binding.edtBookName;
+        edtAuthorName = binding.edtAuthorName;
+        edtSummary = binding.edtSummary;
+        edtInventoryQuantity = binding.edtInventoryQuantity;
+        edtAvailableQuantity = binding.edtAvailableQuantity;
+
+        spnBookCategory = binding.spnCategoryName;
+        spnPublisher = binding.spnPublisherName;
+        spnStatus = binding.spnStatus;
+
+        btnAdd = binding.btnSubmit;
+
+        ibPublishDate = binding.ibPublishDate;
+        editPublishDate = binding.editPublishDate;
+
+        // Đặt các lựa chọn cho Spinner spnStatus
+        String[] statusOptions = {"Borrowable", "Not Borrowable"};
+        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, statusOptions);
+        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnStatus.setAdapter(statusAdapter);
     }
 
-    private void CreateSpinner(){
-        // Get categories from db
-        JSONObject categoryObject = new JSONObject();
-        try {
-            categoryObject.put("event", Constants.EVENT_GET_CATEGORIES);
-            categoryObject.put("username", DataManager.getInstance().username);
-            String mess = categoryObject.toString();
-            WebSocketClient.getInstance().requestToServer(mess, this);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
+    private boolean isInputValid() {
+        // Kiểm tra các trường EditText
+        if (edtBookId.getText().toString().trim().isEmpty() ||
+                edtBookName.getText().toString().trim().isEmpty() ||
+                edtAuthorName.getText().toString().trim().isEmpty() ||
+                edtSummary.getText().toString().trim().isEmpty() ||
+                edtInventoryQuantity.getText().toString().trim().isEmpty() ||
+                edtAvailableQuantity.getText().toString().trim().isEmpty() ||
+                editPublishDate.getText().toString().trim().isEmpty()) {
+            return false;
         }
+
+        if (!imgSelected)
+            return false;
+
+        return true;
     }
 
-    @Override
-    public void onLoginResponse(boolean result) throws JSONException {
+    private void fetchAndSetData() {
+        // Gọi API để lấy danh sách Category
+        restfulAPIService.getAllCategories().enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Category> categories = response.body();
+                    List<String> categoryNames = new ArrayList<>();
+                    for (Category category : categories) {
+                        categoryNames.add(category.getCategoryName());
+                    }
+                    ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, categoryNames);
+                    categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spnBookCategory.setAdapter(categoryAdapter);
+                }
+            }
 
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                Toast.makeText(getContext(), "Failed to load categories", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Gọi API để lấy danh sách Publisher
+        restfulAPIService.getAllPublishers().enqueue(new Callback<List<Publisher>>() {
+            @Override
+            public void onResponse(Call<List<Publisher>> call, Response<List<Publisher>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Publisher> publishers = response.body();
+                    List<String> publisherNames = new ArrayList<>();
+                    for (Publisher publisher : publishers) {
+                        publisherNames.add(publisher.getPublisherName());
+                    }
+                    ArrayAdapter<String> publisherAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, publisherNames);
+                    publisherAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spnPublisher.setAdapter(publisherAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Publisher>> call, Throwable t) {
+                Toast.makeText(getContext(), "Failed to load publishers", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    @Override
-    public void onGetDataResponse(String data) {
-        Gson gson = new Gson();
-        DataResponse dataResponse = gson.fromJson(data, DataResponse.class);
-        DataManager.getInstance().UpdateData(dataResponse);
-        LoadingDialog.getInstance(getContext()).hide();
-        startActivity(new Intent(getContext(), MainActivity.class));
-    }
-
-    @Override
-    public void onOrderResponse(boolean result) {
-
-    }
-
-    @Override
-    public void onAddBookResponse(boolean result) throws JSONException {
-        LoadingDialog.getInstance(getContext()).hide();
-        if (result) {
-            GetAllData();
-            PopupUtils.showPopup(getContext(), "", "Add new book successfully.", Constants.TYPE_ALERT.OK, null, null);
-        }
-        else {
-            PopupUtils.showPopup(getContext(), "Warning", "Add new book failed. Please try again.", Constants.TYPE_ALERT.OK, null, null);
-        }
-    }
-
-    @Override
-    public void onAddCategoryResponse(boolean result) throws JSONException {
-        if (result){
-            GetAllCategories();
-            dialog.dismiss();
-        }
-        else {
-            PopupUtils.showPopup(getContext(), "Warning", "Add new category failed. Please try again.", Constants.TYPE_ALERT.OK, null, null);
-        }
-    }
-
-    @Override
-    public void onGetCategoryResponse(String data) throws JSONException {
-        Gson gson = new Gson();
-        CategoryResponse categoryResponse = gson.fromJson(data, CategoryResponse.class);
-        List<Category> categories = categoryResponse.getCategories();
-
-        for (Category category: categories) {
-            if (!data_lsp.contains(category.getName()))
-                data_lsp.add(category.getName());
-        }
-        adapter = new ArrayAdapter<String>(getContext(), R.layout.category_iem_spinner,data_lsp);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_items);
-        spnBookCategory.setAdapter(adapter);
-    }
-
-    @Override
-    public void onHandlePhieu(boolean result) throws JSONException {
-
-    }
-
-    @Override
-    public void onHandleUpdate(boolean result) throws JSONException {
-
-    }
-
-
-    void GetAllData() throws JSONException {
-        JSONObject loginObject = new JSONObject();
-        loginObject.put("event", Constants.EVENT_GET_DATA);
-        loginObject.put("username", DataManager.getInstance().username);
-        String mess = loginObject.toString();
-        WebSocketClient.getInstance().requestToServer(mess, this);
-    }
-
-    void GetAllCategories() throws JSONException {
-        JSONObject categoryObject = new JSONObject();
-        categoryObject.put("event", Constants.EVENT_GET_CATEGORIES);
-        categoryObject.put("username", DataManager.getInstance().username);
-        String mess = categoryObject.toString();
-        WebSocketClient.getInstance().requestToServer(mess, this);
+    // Phương thức chuyển đổi Bitmap thành chuỗi base64
+    private String convertBitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 }

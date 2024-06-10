@@ -18,6 +18,8 @@ public class SupplierService {
 
     public ResponseEntity<List<Supplier>> addSupplier(Supplier supplier) {
         try {
+            supplier.setStatus("Active");
+            System.out.println(supplier);
             SupplierDao.save(supplier);
             // Get all Suppliers
             List<Supplier> SuppliersRs = SupplierDao.findAll();
@@ -56,15 +58,14 @@ public class SupplierService {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public ResponseEntity<List<Supplier>> updateSupplier(Supplier supplier) {
+    public ResponseEntity<Supplier> updateSupplier(Supplier supplier) {
         try {
             if (!SupplierDao.existsById(supplier.getId())) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
             SupplierDao.save(supplier);
-            List<Supplier> Suppliers = SupplierDao.findAll();
-            return new ResponseEntity<>(Suppliers, HttpStatus.OK);
+            return new ResponseEntity<>(supplier, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }

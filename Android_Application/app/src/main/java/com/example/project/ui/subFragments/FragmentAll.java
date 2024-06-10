@@ -65,15 +65,15 @@ public class FragmentAll extends Fragment {
     }
 
     public void refresh(){
-        Button myButton = getParentFragment().getView().findViewById(R.id.myButton);
-        myButton.setText("Check Out +" + DataManager.getInstance().getBooksSelect().size());
+//        Button myButton = getParentFragment().getView().findViewById(R.id.myButton);
+//        myButton.setText("Check Out +" + DataManager.getInstance().getBooksSelect().size());
 
         listView = view.findViewById(R.id.listView);
         if(adapter == null) adapter = new CustomBookAdapter(requireContext(), R.layout.list_item_book, true);
         adapter.setOnSelectButtonClickListener(new OnSelectButtonClickListener(){
             @Override
             public void onSelectButtonClick() {
-                myButton.setText("Check Out +" + DataManager.getInstance().getBooksSelect().size());
+//                myButton.setText("Check Out +" + DataManager.getInstance().getBooksSelect().size());
             }
         });
         NewBook[] books = (NewBook[]) NewDataManager.getInstance().books.toArray(new NewBook[0]);

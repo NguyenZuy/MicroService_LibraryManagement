@@ -29,6 +29,15 @@ public class BookService {
 
     public ResponseEntity<List<Book>> addBook(BookDto bookDto) {
         try {
+            // Loại bỏ những ký tự không hợp lệ
+            String base64Image = bookDto.getImage().replaceAll("[^A-Za-z0-9+/=]", "");
+
+            // Chỉnh sửa kích thước bằng cách thêm dấu = nếu cần
+            int padding = 4 - (base64Image.length() % 4);
+            if (padding != 4) {
+                base64Image += "=".repeat(padding);
+            }
+
             // Find publisher and category by Id
             Publisher publisher = publisherDao.findOneByPublisherName(bookDto.getPublisherName());
             Category category = categoryDao.findOneByCategoryName(bookDto.getCategoryName());
@@ -37,8 +46,10 @@ public class BookService {
             Book book = new Book();
             book.setId(bookDto.getId());
 
-            byte[] imageBytes = Base64.getDecoder().decode(bookDto.getImage());
-            book.setImage(imageBytes);
+            System.out.println(bookDto.getImage());
+
+//            byte[] imageBytes = Base64.getDecoder().decode(bookDto.getImage());
+            byte[] imageBytes = Base64.getDecoder().decode(base64Image);
             book.setImage(imageBytes);
 
             book.setTitle(bookDto.getTitle());

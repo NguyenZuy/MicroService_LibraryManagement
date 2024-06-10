@@ -115,7 +115,7 @@ public class DetailLoanSlipService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public ResponseEntity<DetailLoanSlip> UpdateDetailSlipStatus(int id, String bookName){
+    public ResponseEntity<String> UpdateDetailSlipStatus(int id, String bookName){
         try {
             // Get book id by name
             String bookId = GetBookIdByTitle(bookName).getBody();
@@ -131,7 +131,7 @@ public class DetailLoanSlipService {
                 DetailLoanSlip detailLoanSlip = detailLoanSlipOptional.get();
                 detailLoanSlip.setStatus("Returned");
                 detailLoanSlipDao.save(detailLoanSlip);
-                return new ResponseEntity<>(detailLoanSlip, HttpStatus.OK);
+                return new ResponseEntity<>("OK", HttpStatus.OK);
             }
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

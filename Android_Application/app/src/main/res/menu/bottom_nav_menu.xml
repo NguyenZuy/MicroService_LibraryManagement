@@ -16,14 +16,14 @@
         android:icon="@drawable/note"
         android:title="@string/title_note" />
 
-    <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/statistics"
-        android:title="@string/title_statistics" />
-
 <!--    <item-->
-<!--        android:id="@+id/navigation_profile"-->
-<!--        android:icon="@drawable/profile"-->
-<!--        android:title="@string/title_profile" />-->
+<!--        android:id="@+id/navigation_notifications"-->
+<!--        android:icon="@drawable/statistics"-->
+<!--        android:title="@string/title_statistics" />-->
+
+    <item
+        android:id="@+id/navigation_book_manager"
+        android:icon="@drawable/closure"
+        android:title="@string/title_book_manager" />
 
 </menu>

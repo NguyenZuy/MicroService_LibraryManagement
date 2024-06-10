@@ -72,11 +72,11 @@ public class ImportSlipService {
             importSlip.setStaffAccount(importSlipDto.getStaffAccount());
             importSlip.setIdSupplier(GetSupplierIdByName(importSlipDto.getSupplierName()).getBody());
             importSlip.setIdOrderSlip(importSlipDto.getIdOrderSlip());
-            importSlipDao.save(importSlip);
+            ImportSlip importSlipTemp = importSlipDao.save(importSlip);
 
-            Integer generatedId = importSlip.getId();
+//            Integer generatedId = importSlipTemp.getId();
 
-            importSlipDto.setId(generatedId);
+            importSlipDto.setId(importSlipTemp.getId());
             System.out.println(importSlipDto.getId());
             return new ResponseEntity<>(importSlipDto, HttpStatus.OK);
         } catch (Exception e) {

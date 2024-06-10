@@ -1,0 +1,19 @@
+<!-- res/layout/item_order_slip.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tvIdSupplier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Supplier ID" />
+
+    <TextView
+        android:id="@+id/tvOrderDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Order Date" />
+</LinearLayout>

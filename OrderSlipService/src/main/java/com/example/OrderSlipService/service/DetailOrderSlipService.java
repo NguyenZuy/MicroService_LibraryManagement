@@ -101,7 +101,7 @@ public class DetailOrderSlipService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public ResponseEntity<String> UpdateDetailSlipStatus(int id, String bookName){
+    public ResponseEntity<DetailOrderSlip> UpdateDetailSlipStatus(int id, String bookName){
         try {
             // Get book id by name
             String bookId = GetBookIdByTitle(bookName).getBody();
@@ -114,12 +114,12 @@ public class DetailOrderSlipService {
             System.out.println(detailLoanSlipPK.getId_order_slip() + " " + detailLoanSlipPK.getId_book());
 
             Optional<DetailOrderSlip> detailOrderSlipOptional = detailOrderSlipDao.findById(detailLoanSlipPK);
-
+            System.out.println("Running here.");
             if(detailOrderSlipOptional.isPresent()){
                 DetailOrderSlip detailOrderSlip = detailOrderSlipOptional.get();
                 detailOrderSlip.setStatus("Imported");
                 detailOrderSlipDao.save(detailOrderSlip);
-                return new ResponseEntity<>("Success", HttpStatus.OK);
+                return new ResponseEntity<>(detailOrderSlip, HttpStatus.OK);
             }
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -27,7 +27,7 @@ public class DetailLoanSlipController {
     }
 
     @PutMapping("updateDetailStatus/{id}/{bookName}")
-    public ResponseEntity<DetailLoanSlip> UpdateDetailLoanSlipStatus(@PathVariable int id, @PathVariable String bookName) {
+    public ResponseEntity<String> UpdateDetailLoanSlipStatus(@PathVariable int id, @PathVariable String bookName) {
         return detailLoanSlipService.UpdateDetailSlipStatus(id, bookName);
     }
 

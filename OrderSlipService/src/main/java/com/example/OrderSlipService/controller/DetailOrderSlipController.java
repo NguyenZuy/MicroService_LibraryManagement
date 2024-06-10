@@ -45,7 +45,7 @@ public class DetailOrderSlipController {
     }
 
     @PutMapping("updateStatus/{id}/{bookName}")
-    public ResponseEntity<String> UpdateStatus(@PathVariable Integer id, @PathVariable String bookName) {
+    public ResponseEntity<DetailOrderSlip> UpdateStatus(@PathVariable Integer id, @PathVariable String bookName) {
         return detailOrderSlipService.UpdateDetailSlipStatus(id, bookName);
     }
 
