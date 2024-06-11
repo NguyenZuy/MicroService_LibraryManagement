@@ -34,15 +34,15 @@ services:
     image: api-gateway:latest  # Assuming you have an image for the book service
     container_name: api-gateway
     ports:
-      - 9091:9091  # Map container port 9091 to host port 9091
+      - 9191:9191  # Map container port 9091 to host port 9091
     depends_on:
       - service-registry
     environment:
       - spring.application.name=api-gateway
-      - server.port=9091
+      - server.port=9191
       - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
       - spring.main.allow-bean-definition-overriding=true
-      # Routing Configurations (from your provided example)
+
       - spring.cloud.gateway.routes[0].id=book-service
       - spring.cloud.gateway.routes[0].uri=lb://book-service
       - spring.cloud.gateway.routes[0].predicates[0]=Path=/book/**,/category/**,/publisher/**
@@ -50,6 +50,22 @@ services:
       - spring.cloud.gateway.routes[1].id=loan-slip-service
       - spring.cloud.gateway.routes[1].uri=lb://loan-slip-service
       - spring.cloud.gateway.routes[1].predicates[0]=Path=/loanSlip/**,/detailLoanSlip/**
+
+      - spring.cloud.gateway.routes[2].id=return-slip-service
+      - spring.cloud.gateway.routes[2].uri=lb://return-slip-service
+      - spring.cloud.gateway.routes[2].predicates[0]=Path=/returnSlip/**, /detailReturnSlip/**
+
+      - spring.cloud.gateway.routes[3].id=supplier-service
+      - spring.cloud.gateway.routes[3].uri=lb://supplier-service
+      - spring.cloud.gateway.routes[3].predicates[0]=Path=/supplier/**
+
+      - spring.cloud.gateway.routes[4].id=order-slip-service
+      - spring.cloud.gateway.routes[4].uri=lb://order-slip-service
+      - spring.cloud.gateway.routes[4].predicates[0]=Path=/orderSlip/**, /detailOrderSlip/**
+
+      - spring.cloud.gateway.routes[5].id=import-slip-service
+      - spring.cloud.gateway.routes[5].uri=lb://import-slip-service
+      - spring.cloud.gateway.routes[5].predicates[0]=Path=/importSlip/**, /detailImportSlip/**
 
   book-service:
     image: book-service:latest  # Assuming you have an image for the book service
