@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/ReturnSlipService-0.0.1-SNAPSHOT.jar return-slip-service.jar
 
 # Expose the Book Service port
-EXPOSE 8083
+EXPOSE 8089
 
 # Define the command to run your application (using the new JAR name)
 CMD ["java", "-jar", "return-slip-service.jar"]

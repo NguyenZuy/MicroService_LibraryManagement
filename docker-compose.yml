@@ -105,7 +105,7 @@ services:
     image: return-slip-service:latest  # Assuming you have an image for the book service
     container_name: return-slip-service
     ports:
-      - 8083:8083  # Map container port 8081 to host port 8081
+      - 8089:8089  # Map container port 8081 to host port 8081
     depends_on:
       - postgresql  # Ensure the 'service-registry' service starts before 'book-service'
       - service-registry
