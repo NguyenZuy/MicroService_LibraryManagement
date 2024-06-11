@@ -1,0 +1,154 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: postgres:latest
+    container_name: postgresql
+    environment:
+      - POSTGRES_DB=postgres  # Default database (not used directly)
+      - POSTGRES_USER=postgres  # Set the database username
+      - POSTGRES_PASSWORD=123456  # Set the database password
+    ports:
+      - 5432:5432  # Map container port 5432 to host port 5432
+    volumes:
+      - ./init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh  # Mount the initialization script
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  service-registry:
+    image: service-registry:latest  # Assuming you have an image for Eureka Server built
+    container_name: service-registry
+    ports:
+      - 8761:8761
+    environment:
+      - spring.application.name=service-registry
+      - server.port=8761
+      - eureka.instance.hostname=localhost
+      - eureka.client.fetch-registry=false
+      - eureka.client.register-with-eureka=false
+
+  api-gateway:
+    image: api-gateway:latest  # Assuming you have an image for the book service
+    container_name: api-gateway
+    ports:
+      - 9091:9091  # Map container port 9091 to host port 9091
+    depends_on:
+      - service-registry
+    environment:
+      - spring.application.name=api-gateway
+      - server.port=9091
+      - eureka.client.serviceUrl.defaultZone=http://service-registry:8761/eureka/
+      - spring.main.allow-bean-definition-overriding=true
+      # Routing Configurations (from your provided example)
+      - spring.cloud.gateway.routes[0].id=book-service
+      - spring.cloud.gateway.routes[0].uri=lb://book-service
+      - spring.cloud.gateway.routes[0].predicates[0]=Path=/book/**,/category/**,/publisher/**
+
+      - spring.cloud.gateway.routes[1].id=loan-slip-service
+      - spring.cloud.gateway.routes[1].uri=lb://loan-slip-service
+      - spring.cloud.gateway.routes[1].predicates[0]=Path=/loanSlip/**,/detailLoanSlip/**
+
+  book-service:
+    image: book-service:latest  # Assuming you have an image for the book service
+    container_name: book-service
+    ports:
+      - 8081:8081  # Map container port 8081 to host port 8081
+    depends_on:
+      - postgresql  # Ensure the 'service-registry' service starts before 'book-service'
+      - service-registry
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/book
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SERVER_PORT=8081
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/  # Update to use the service-registry service name
+
+  loan-slip-service:
+    image: loan-slip-service:latest  # Assuming you have an image for the book service
+    container_name: loan-slip-service
+    ports:
+      - 8082:8082  # Map container port 8081 to host port 8081
+    depends_on:
+      - postgresql  # Ensure the 'service-registry' service starts before 'book-service'
+      - service-registry
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/loan_slip
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SERVER_PORT=8082
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/  # Update to use the service-registry service name
+
+  return-slip-service:
+    image: return-slip-service:latest  # Assuming you have an image for the book service
+    container_name: return-slip-service
+    ports:
+      - 8083:8083  # Map container port 8081 to host port 8081
+    depends_on:
+      - postgresql  # Ensure the 'service-registry' service starts before 'book-service'
+      - service-registry
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/return_slip
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SERVER_PORT=8083
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/  # Update to use the service-registry service name
+
+  supplier-service:
+    image: supplier-service:latest  # Assuming you have an image for the book service
+    container_name: supplier-service
+    ports:
+      - 8084:8084  # Map container port 8081 to host port 8081
+    depends_on:
+      - postgresql  # Ensure the 'service-registry' service starts before 'book-service'
+      - service-registry
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/supplier
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SERVER_PORT=8084
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/  # Update to use the service-registry service name
+
+  order-slip-service:
+    image: order-slip-service:latest  # Assuming you have an image for the book service
+    container_name: order-slip-service
+    ports:
+      - 8085:8085  # Map container port 8081 to host port 8081
+    depends_on:
+      - postgresql  # Ensure the 'service-registry' service starts before 'book-service'
+      - service-registry
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/order_slip
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SERVER_PORT=8085
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/  # Update to use the service-registry service name
+
+  import-slip-service:
+    image: import-slip-service:latest  # Assuming you have an image for the book service
+    container_name: import-slip-service
+    ports:
+      - 8086:8086  # Map container port 8081 to host port 8081
+    depends_on:
+      - postgresql  # Ensure the 'service-registry' service starts before 'book-service'
+      - service-registry
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/import_slip
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - SERVER_PORT=8086
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/  # Update to use the service-registry service name
