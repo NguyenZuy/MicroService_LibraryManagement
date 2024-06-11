@@ -80,53 +80,13 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/layout_otp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_background_edittext"
-        android:layout_below="@id/layout_mail"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        >
-        <ImageView
-            android:id="@+id/icon_opt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_otp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_centerVertical="true"
-            />
-        <EditText
-            android:id="@+id/editOtp"
-            android:layout_toStartOf="@id/sendOtp"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_toEndOf="@id/icon_opt"
-            android:hint="OTP"
-            android:textColorHint="#BCC1CA"
-            android:textColor="@color/black"
-            android:background="@drawable/transparent_background"/>
-        <TextView
-            android:id="@+id/sendOtp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:text="Send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:textColor="#065AFF"
-            />
-
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layout_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_background_edittext"
-        android:layout_below="@id/layout_otp"
+        android:layout_below="@id/layout_mail"
         android:orientation="horizontal"
         android:layout_marginTop="20dp"
         >

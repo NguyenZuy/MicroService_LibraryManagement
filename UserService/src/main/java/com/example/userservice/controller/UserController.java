@@ -25,8 +25,20 @@ public class UserController {
     public ResponseEntity<Map<String, String>> login(@RequestBody User user) {
         return userService.login(user);
     }
+
+//    @PostMapping("checkUser")
+//    public ResponseEntity<Map<String, String>> checkUser(@RequestBody User user) {
+//        return userService.checkUser(user);
+//    }
+
+    @PostMapping("checkCurrentUser")
+    public ResponseEntity<Map<String, String>> checkCurrentUser() {
+        return userService.checkCurrentUser();
+    }
+
     @GetMapping("abc")
     public String abc(){
         return "abc";
     }
+
 }

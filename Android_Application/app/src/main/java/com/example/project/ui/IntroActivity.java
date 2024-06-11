@@ -63,7 +63,7 @@ public class IntroActivity extends AppCompatActivity {
                     if(books != null)
                         NewDataManager.getInstance().books = books;
                     LoadingDialog.getInstance(getApplicationContext()).hide();
-                    startActivity(new Intent(IntroActivity.this, MainActivity.class));
+                    //startActivity(new Intent(IntroActivity.this, MainActivity.class));
                 }
             }
 

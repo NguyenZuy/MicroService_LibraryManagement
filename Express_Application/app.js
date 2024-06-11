@@ -77,6 +77,7 @@ app.get('/signin', async (req, res) => {
             const {
                 username,
                 password,
+                email,
             } = req.body;
 
             // Kiểm tra dữ liệu đã được nhập vào chưa
@@ -87,7 +88,7 @@ app.get('/signin', async (req, res) => {
             const user = {
                 username,
                 password,
-                email: "a@gmail.com",
+                email,
             };
             const response = await axios.post('http://localhost:9191/user/addUser', user);
             console.error('Error add user:', response.status);
@@ -133,6 +134,29 @@ app.get('/signin', async (req, res) => {
         } catch (error) {
             console.error('Error login:', error);
             res.status(500).json('Error login');
+        }
+    });
+
+    app.post('/checkCurrentUser', async (req, res) => {
+        try {
+            const {
+                username,
+                password,
+            } = req.body;
+            const user = {
+                username,
+                password,
+                email: "a@gmail.com",
+            };
+
+            const response = await axios.post('http://localhost:9191/user/checkCurrentUser', user);
+            console.error('Error login:', response.data);
+            return res.status(200).json(response.data);
+
+        } catch (error) {
+            console.error('Error login:', error);
+            // Trả về thông báo lỗi từ máy chủ của bạn
+            return res.status(500).json({ error: 'Error login' });
         }
     });
 }

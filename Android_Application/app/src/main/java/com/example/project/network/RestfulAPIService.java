@@ -13,8 +13,10 @@ import com.example.project.entities.OrderSlip;
 import com.example.project.entities.Publisher;
 import com.example.project.entities.ReturnSlip;
 import com.example.project.entities.Supplier;
+import com.example.project.entities.User;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -103,6 +105,12 @@ public interface RestfulAPIService {
 
     @POST("supplier/add")
     Call<List<Supplier>> addSupplier(@Body Supplier supplier);
+
+    @POST("user/login")
+    Call<Map<String, String>> login(@Body User user);
+
+    @POST("user/addUser")
+    Call<Map<String, String>> signUp(@Body User user);
 
     @PUT("supplier/update")
     Call<Supplier> updateSupplier(@Body Supplier supplier);

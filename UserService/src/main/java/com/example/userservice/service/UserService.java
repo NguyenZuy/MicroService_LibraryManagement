@@ -15,6 +15,7 @@ import java.util.Map;
 public class UserService {
 
     private UserDao userDao;
+    private String currentUser ;
     public UserService(UserDao userDao) {
         this.userDao = userDao;
     }
@@ -22,10 +23,6 @@ public class UserService {
     public ResponseEntity<Map<String, String>> addUser(User user) {
         System.out.println("Received user: " + user);
         try {
-//            User userLogin = userDao.getReferenceById(user.getUsername());
-//            if (userLogin.getUsername()!= null) {
-//                return new ResponseEntity<>(HttpStatus.CONFLICT);
-//            }
             userDao.save(user);
             Map<String, String> response = new HashMap<>();
             response.put("message", "User added successfully");
@@ -49,6 +46,7 @@ public class UserService {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
             Map<String, String> response = new HashMap<>();
+            currentUser = userLogin.getEmail();
             response.put("message", "Login successful");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
@@ -57,6 +55,12 @@ public class UserService {
             response.put("message", "An error occurred while logging in");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    public ResponseEntity<Map<String, String>> checkCurrentUser() {
+        System.out.println(currentUser);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", currentUser);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

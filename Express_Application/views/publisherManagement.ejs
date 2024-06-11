@@ -158,10 +158,10 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="topbar-info">
-                                            <a href="tel:+61-3-8376-6284"><i class="fa fa-phone"></i>+84-399905432</a>
+                                            <a href="tel:+84-3-8376-6284"><i class="fa fa-phone"></i>+84334174563</a>
                                             <span>/</span>
-                                            <a href="mailto:support@libraria.com"><i
-                                                    class="fa fa-envelope"></i>suytdocotdien@gmail.com</a>
+                                            <a id="emailLink" href="mailto:support@libraria.com"><i
+                                                    class="fa fa-envelope"></i>chien4@gmail.com</a>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -651,5 +651,50 @@
         } catch (error) {
             alert(`Error: ${error.message}`);
         }
+    });
+</script>
+<script>
+    function changeEmail(newEmail) {
+        // Lấy thẻ <a> bằng ID
+        var emailLink = document.getElementById("emailLink");
+
+        // Thay đổi nội dung của thẻ <a> bằng biến string mới
+        emailLink.innerHTML = "<i class='fa fa-envelope'></i>" + newEmail;
+
+        // Thay đổi thuộc tính href của thẻ <a> (nếu cần)
+        emailLink.href = "mailto:" + newEmail;
+    }
+
+    async function initializePage() {
+        // Đoạn mã JavaScript của bạn ở đây
+        var newEmail = "chien4@gmail.com";
+        try {
+            const response = await fetch('/checkCurrentUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Error occurred while checking current user');
+            }
+
+            const data = await response.json(); // Chuyển đổi phản hồi sang đối tượng JSON
+            newEmail = data.message;
+
+
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+        }
+        changeEmail(newEmail);
+    }
+
+    // Gọi hàm khi trang được tải hoàn toàn
+    document.addEventListener('DOMContentLoaded', () => {
+        initializePage();
     });
 </script>

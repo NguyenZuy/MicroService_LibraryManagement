@@ -12,14 +12,19 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.project.DataManager;
 import com.example.project.R;
 import com.example.project.entities.DataResponse;
+import com.example.project.entities.Supplier;
 import com.example.project.entities.User;
+import com.example.project.network.RestfulAPIService;
+import com.example.project.network.RetrofitClient;
 import com.example.project.network.SocketEventListener;
 import com.example.project.network.WebSocketClient;
 import com.example.project.network.WebSocketResponseListener;
+import com.example.project.ui.home.HomeFragment;
 import com.example.project.ui.subFragments.SignUpActivity;
 import com.example.project.utils.Constants;
 import com.example.project.utils.ConvertService;
@@ -31,37 +36,59 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.google.gson.Gson;
 
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LoginActivity extends AppCompatActivity implements SocketEventListener {
     TextView signUpTxt;
     private Boolean resultCheck = new Boolean(true);
     boolean isPasswordVisible = false;
+
+    RestfulAPIService restfulAPIService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UIService.HideStatusBar(this, this);
         setContentView(R.layout.activity_login);
+        restfulAPIService = RetrofitClient.getClient(Constants.SERVER_URL).create(RestfulAPIService.class);
 
         // Now you can find the views and set onClickListener
         findViewById(R.id.btnSubmit).setOnClickListener(view -> {
             LoadingDialog.getInstance(this).show();
 
             JSONObject loginObject = new JSONObject();
-            try {
-                // Corrected casting to EditText
-                EditText editUsername = (EditText)findViewById(R.id.editUsername);
-                EditText editPassword = (EditText)findViewById(R.id.editPassword);
+            // Corrected casting to EditText
+            EditText editUsername = (EditText)findViewById(R.id.editUsername);
+            EditText editPassword = (EditText)findViewById(R.id.editPassword);
 
-                DataManager.getInstance().username = editUsername.getText().toString();
+            String username = editUsername.getText().toString();
+            String password = editPassword.getText().toString();
+            String email = "1@gmail.com";
+            User user = new User(username, password, email);
 
-                loginObject.put("event", Constants.EVENT_LOGIN);
-                loginObject.put("username", editUsername.getText().toString());
-                loginObject.put("password", editPassword.getText().toString());
-                String mess = loginObject.toString();
-                Log.d("Client login", "Sending message to server: " + mess);
-                WebSocketClient.getInstance().requestToServer(mess, this);
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
+            restfulAPIService.login(user).enqueue(new Callback<Map<String, String>>() {
+                @Override
+                public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+                    if (response.isSuccessful()) {
+                        Intent intent;
+                        intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                    // Xử lý khi có lỗi xảy ra trong quá trình gọi API
+                    Toast.makeText(LoginActivity.this, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            });
         });
         findViewById(R.id.btn_signup).setOnClickListener(new View.OnClickListener() {
             @Override
