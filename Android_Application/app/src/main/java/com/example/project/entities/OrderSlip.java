@@ -5,7 +5,6 @@ import java.util.Date;
 public class OrderSlip {
     private Integer id;
     private String orderDate;
-    private String staffAccount;
     private String supplierName;
 
     public Integer getId() {
@@ -14,10 +13,6 @@ public class OrderSlip {
 
     public String getOrderDate() {
         return orderDate;
-    }
-
-    public String getStaffAccount() {
-        return staffAccount;
     }
 
     public String getSupplierName() {
@@ -30,10 +25,6 @@ public class OrderSlip {
 
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
-    }
-
-    public void setStaffAccount(String staffAccount) {
-        this.staffAccount = staffAccount;
     }
 
     public void setSupplierName(String supplierName) {

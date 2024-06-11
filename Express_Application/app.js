@@ -52,7 +52,7 @@ const upload = multer({ storage: storage });
 
 // Define routes
 // *Home
-app.get('/home', async(req, res) => {
+app.get('/home', async (req, res) => {
     try {
         res.render('home');
     } catch (error) {
@@ -60,7 +60,7 @@ app.get('/home', async(req, res) => {
         res.status(500).send('Error fetching books');
     }
 });
-app.get('/signin', async(req, res) => {
+app.get('/signin', async (req, res) => {
     try {
         res.render('signin');
     } catch (error) {
@@ -69,9 +69,10 @@ app.get('/signin', async(req, res) => {
     }
 });
 
+// Acount management
 {
     //* Add user
-    app.post('/addUser', async(req, res) => {
+    app.post('/addUser', async (req, res) => {
         try {
             const {
                 username,
@@ -102,7 +103,7 @@ app.get('/signin', async(req, res) => {
             res.status(500).send('Error add users');
         }
     });
-    app.post('/login', async(req, res) => {
+    app.post('/login', async (req, res) => {
         try {
             const {
                 username,
@@ -135,11 +136,13 @@ app.get('/signin', async(req, res) => {
         }
     });
 }
+
+
 // Book management
 //! Check Account
 //! Watch Detail UI
 {
-    app.get('/books', async(req, res) => {
+    app.get('/books', async (req, res) => {
         try {
             const response = await axios.get('http://localhost:9191/book/getBorrowable');
             const books = response.data;
@@ -150,7 +153,7 @@ app.get('/signin', async(req, res) => {
         }
     });
 
-    app.get('/bookManagement', async(req, res) => {
+    app.get('/bookManagement', async (req, res) => {
         try {
             const responseGetCategories = await axios.get('http://localhost:9191/category/getAll');
             const responseGetPublishers = await axios.get('http://localhost:9191/publisher/getAll');
@@ -168,7 +171,7 @@ app.get('/signin', async(req, res) => {
     });
 
     //* Add book
-    app.post('/bookManagement', upload.single('image'), async(req, res) => {
+    app.post('/bookManagement', upload.single('image'), async (req, res) => {
         try {
             const {
                 id,
@@ -233,7 +236,7 @@ app.get('/signin', async(req, res) => {
     });
 
     //* Update page
-    app.get('/updateBook/:id', async(req, res) => {
+    app.get('/updateBook/:id', async (req, res) => {
         try {
 
             const bookId = req.params.id;
@@ -255,7 +258,7 @@ app.get('/signin', async(req, res) => {
         }
     });
 
-    app.post('/updateBook', upload.single('image'), async(req, res) => {
+    app.post('/updateBook', upload.single('image'), async (req, res) => {
         try {
             const {
                 id,
@@ -326,7 +329,7 @@ app.get('/signin', async(req, res) => {
 // Loan management
 //! Check Account
 {
-    app.get('/loan', async(req, res) => {
+    app.get('/loan', async (req, res) => {
         try {
             const response = await axios.get('http://localhost:9191/loanSlip/getAll');
             const loans = response.data;
@@ -340,7 +343,7 @@ app.get('/signin', async(req, res) => {
     });
 
 
-    app.post('/loan', async(req, res) => {
+    app.post('/loan', async (req, res) => {
         try {
             const { email, phoneNumber, address, firstName, lastName } = req.body;
 
@@ -365,7 +368,7 @@ app.get('/signin', async(req, res) => {
 // Detail loan management
 //! Check Account
 {
-    app.get('/detailLoan/:id', async(req, res) => {
+    app.get('/detailLoan/:id', async (req, res) => {
         try {
             const loanId = req.params.id;
             const getLoanByIdResponse = await axios.post(`http://localhost:9191/loanSlip/getById/${loanId}`);
@@ -390,7 +393,7 @@ app.get('/signin', async(req, res) => {
         }
     });
 
-    app.get('/addDetailLoan', async(req, res) => {
+    app.get('/addDetailLoan', async (req, res) => {
         try {
             // Get all books to choose
             const response = await axios.get('http://localhost:9191/detailLoanSlip/getBooks');
@@ -406,7 +409,7 @@ app.get('/signin', async(req, res) => {
     });
 
     // Add
-    app.post('/addDetailLoan', upload.none(), async(req, res) => {
+    app.post('/addDetailLoan', upload.none(), async (req, res) => {
         try {
             // console.log(req.body);
             // Save loan slip
@@ -475,17 +478,17 @@ app.get('/signin', async(req, res) => {
             // Get loan slip id
             const id = responseAddLoan.data.id;
 
-      // Get each row
-      for (let i = 0; i < bookNames.length; i++) {
-        const detailLoanSlip = {
-          loanSlipId: id,
-          bookName: bookNames[i],
-          quantity: quantities[i],
-          borrowDate: borrowDates[i],
-          returnDate: returnDates[i],
-          status: "Not Return"
-        };
-        // console.log(detailLoanSlip);
+            // Get each row
+            for (let i = 0; i < bookNames.length; i++) {
+                const detailLoanSlip = {
+                    loanSlipId: id,
+                    bookName: bookNames[i],
+                    quantity: quantities[i],
+                    borrowDate: borrowDates[i],
+                    returnDate: returnDates[i],
+                    status: "Not Return"
+                };
+                // console.log(detailLoanSlip);
 
                 const responseAddDetailLoan = await axios.post('http://localhost:9191/detailLoanSlip/add', detailLoanSlip);
 
@@ -509,7 +512,7 @@ app.get('/signin', async(req, res) => {
 // Return management
 //! Check Account
 {
-    app.get('/returnSlip', async(req, res) => {
+    app.get('/returnSlip', async (req, res) => {
         try {
             const response = await axios.get('http://localhost:9191/returnSlip/getAll');
             const returnSlips = response.data;
@@ -522,7 +525,7 @@ app.get('/signin', async(req, res) => {
     });
 
     // Add Return
-    app.post('/returnLoan/:id', async(req, res) => {
+    app.post('/returnLoan/:id', async (req, res) => {
         try {
             const loanId = req.params.id;
             const getLoanByIdResponse = await axios.post(`http://localhost:9191/loanSlip/getById/${loanId}`);
@@ -532,14 +535,14 @@ app.get('/signin', async(req, res) => {
 
             // Add return
             const returnSlip = {
-                    email: loan.email,
-                    phoneNumber: loan.phoneNumber,
-                    address: loan.address,
-                    firstName: loan.firstName,
-                    lastName: loan.lastName,
-                    loanId: loanId
-                }
-                // console.log(returnSlip);
+                email: loan.email,
+                phoneNumber: loan.phoneNumber,
+                address: loan.address,
+                firstName: loan.firstName,
+                lastName: loan.lastName,
+                loanId: loanId
+            }
+            // console.log(returnSlip);
 
             const addReturnResponse = await axios.post(`http://localhost:9191/returnSlip/add`, returnSlip);
             if (!addReturnResponse || addReturnResponse.status !== 200) {
@@ -585,7 +588,7 @@ app.get('/signin', async(req, res) => {
 // Category management
 //! Check Account
 {
-    app.get('/categoryManagement', async(req, res) => {
+    app.get('/categoryManagement', async (req, res) => {
         try {
             const response = await axios.get('http://localhost:9191/category/getAll');
             const categories = response.data;
@@ -597,7 +600,7 @@ app.get('/signin', async(req, res) => {
         }
     });
 
-    app.post('/categoryManagement', async(req, res) => {
+    app.post('/categoryManagement', async (req, res) => {
         try {
             const { categoryName } = req.body;
 
@@ -621,7 +624,7 @@ app.get('/signin', async(req, res) => {
         }
     });
 
-    app.post('/categoryManagement/update', async(req, res) => {
+    app.post('/categoryManagement/update', async (req, res) => {
         try {
             const { categoryId, categoryName } = req.body;
 
@@ -652,7 +655,7 @@ app.get('/signin', async(req, res) => {
 // Publisher management
 //! Check Account
 {
-    app.get('/publisherManagement', async(req, res) => {
+    app.get('/publisherManagement', async (req, res) => {
         try {
             const response = await axios.get('http://localhost:9191/publisher/getAll');
             const publishers = response.data;
@@ -665,7 +668,7 @@ app.get('/signin', async(req, res) => {
     });
 
     // Add
-    app.post('/publisherManagement', async(req, res) => {
+    app.post('/publisherManagement', async (req, res) => {
         try {
             const { publisherName } = req.body;
 
@@ -690,7 +693,7 @@ app.get('/signin', async(req, res) => {
     });
 
     // Update
-    app.post('/publisherManagement/update', async(req, res) => {
+    app.post('/publisherManagement/update', async (req, res) => {
         try {
             const { publisherId, publisherName } = req.body;
 
@@ -718,7 +721,7 @@ app.get('/signin', async(req, res) => {
 // Supplier management
 //! Check Account
 {
-    app.get('/supplier', async(req, res) => {
+    app.get('/supplier', async (req, res) => {
         try {
             const response = await axios.get('http://localhost:9191/supplier/getAll');
             const suppliers = response.data;
@@ -730,7 +733,7 @@ app.get('/signin', async(req, res) => {
         }
     });
 
-    app.post('/supplier', async(req, res) => {
+    app.post('/supplier', async (req, res) => {
         try {
 
             const { supplierName, supplierEmail, supplierPhoneNumber, supplierAddress, supplierStatus } = req.body;
@@ -762,7 +765,7 @@ app.get('/signin', async(req, res) => {
     });
 
     // update
-    app.post('/updateSupplier', async(req, res) => {
+    app.post('/updateSupplier', async (req, res) => {
         try {
 
             const { supplierId, supplierName, supplierEmail, supplierPhoneNumber, supplierAddress, supplierStatus } = req.body;
@@ -796,7 +799,7 @@ app.get('/signin', async(req, res) => {
 
 // Import slip management
 {
-    app.get('/importManagement', async(req, res) => {
+    app.get('/importManagement', async (req, res) => {
         try {
             const supplierResponse = await axios.get("http://localhost:9191/supplier/getSuppliersForSlip");
             const importResponse = await axios.get("http://localhost:9191/importSlip/getAll");
@@ -808,7 +811,7 @@ app.get('/signin', async(req, res) => {
         }
     });
 
-    app.get('/detailImport/:id', async(req, res) => {
+    app.get('/detailImport/:id', async (req, res) => {
         try {
             const importId = req.params.id;
 
@@ -825,7 +828,7 @@ app.get('/signin', async(req, res) => {
 
 // Order slip management
 {
-    app.get('/orderManagement', async(req, res) => {
+    app.get('/orderManagement', async (req, res) => {
         try {
             const supplierResponse = await axios.get("http://localhost:9191/supplier/getSuppliersForSlip");
             const orderResponse = await axios.get("http://localhost:9191/orderSlip/getAll");
@@ -837,7 +840,7 @@ app.get('/signin', async(req, res) => {
         }
     });
 
-    app.post('/orderManagement', async(req, res) => {
+    app.post('/orderManagement', async (req, res) => {
         try {
             // Lấy dữ liệu từ URL parameters
             const { orderDate, supplierName } = req.body;
@@ -861,7 +864,7 @@ app.get('/signin', async(req, res) => {
     });
 
     // UI Detail
-    app.get('/detailOrder/:id', async(req, res) => {
+    app.get('/detailOrder/:id', async (req, res) => {
         try {
             const orderId = req.params.id;
             const getOrderByIdResponse = await axios.post(`http://localhost:9191/orderSlip/getById/${orderId}`);
@@ -878,7 +881,7 @@ app.get('/signin', async(req, res) => {
     });
 
     // UI add
-    app.get('/addDetailOrder', async(req, res) => {
+    app.get('/addDetailOrder', async (req, res) => {
         try {
             const booksResponse = await axios.get("http://localhost:9191/book/getAll");
 
@@ -890,7 +893,7 @@ app.get('/signin', async(req, res) => {
     });
 
     // Add detail order
-    app.post('/addDetailOrder', upload.none(), async(req, res) => {
+    app.post('/addDetailOrder', upload.none(), async (req, res) => {
         try {
             const booksResponse = await axios.get("http://localhost:9191/book/getAll");
             const order = req.session.order;
@@ -924,7 +927,6 @@ app.get('/signin', async(req, res) => {
             let orderSlip = {
                 id: 0,
                 orderDate: order.orderDate,
-                staffAccount: "",
                 supplierName: order.supplierName
             }
             const responseAddOrder = await axios.post('http://localhost:9191/orderSlip/add', order);
@@ -965,7 +967,7 @@ app.get('/signin', async(req, res) => {
 }
 
 // Detail return management
-app.get('/detailReturnSlip/:id', async(req, res) => {
+app.get('/detailReturnSlip/:id', async (req, res) => {
     try {
         const returnId = req.params.id;
         const getDetailResponse = await axios.get(`http://localhost:9191/detailReturnSlip/getByReturn/${returnId}`);
@@ -988,7 +990,7 @@ app.get('/detailReturnSlip/:id', async(req, res) => {
 });
 
 // Add Return
-app.post('/importBook/:id', async(req, res) => {
+app.post('/importBook/:id', async (req, res) => {
     try {
         const orderId = req.params.id;
         const getOrderByIdResponse = await axios.post(`http://localhost:9191/orderSlip/getById/${orderId}`);
@@ -1005,7 +1007,6 @@ app.post('/importBook/:id', async(req, res) => {
         const importSlip = {
             id: 0,
             importDate: `${yyyy}-${mm}-${dd}`,
-            staffAccount: "",
             supplierName: order.supplierName,
             idOrderSlip: order.id
         };
@@ -1024,11 +1025,11 @@ app.post('/importBook/:id', async(req, res) => {
         // Add detail import
         for (const item of selectedData) {
             const detailImport = {
-                    importSlipId: getAddImportResponse.id,
-                    bookName: item.bookName,
-                    quantity: parseInt(item.quantity, 10),
-                }
-                // console.log('Detail import: ', detailImport);
+                importSlipId: getAddImportResponse.id,
+                bookName: item.bookName,
+                quantity: parseInt(item.quantity, 10),
+            }
+            // console.log('Detail import: ', detailImport);
 
             const addDetailImportResponse = await axios.post(`http://localhost:9191/detailImportSlip/add`, detailImport);
 
@@ -1052,7 +1053,7 @@ app.post('/importBook/:id', async(req, res) => {
     }
 });
 
-app.get('/analyst', async(req, res) => {
+app.get('/analyst', async (req, res) => {
     try {
         res.render('analyst');
     } catch (error) {

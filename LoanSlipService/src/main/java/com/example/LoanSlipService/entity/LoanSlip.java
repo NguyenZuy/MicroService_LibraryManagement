@@ -34,12 +34,6 @@ public class LoanSlip {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "customer_account")
-    private String customerAccount;
-
-    @Column(name = "staff_account")
-    private String staffAccount;
-
     @OneToMany(mappedBy = "loanSlip", fetch = FetchType.LAZY)
     private List<DetailLoanSlip> detailLoanSlips;
 }

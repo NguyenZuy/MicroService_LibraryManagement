@@ -22,9 +22,6 @@ public class OrderSlip {
     @Column(name = "order_date")
     private Date orderDate;
 
-    @Column(name = "staff_account")
-    private String staffAccount;
-
     @Column(name = "id_supplier")
     private Integer idSupplier;
 

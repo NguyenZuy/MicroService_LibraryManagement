@@ -29,7 +29,6 @@ public class ImportSlipService {
                 ImportSlipDto importSlipDto = new ImportSlipDto();
                 importSlipDto.setId(importSlip.getId());
                 importSlipDto.setImportDate(importSlip.getImportDate());
-                importSlipDto.setStaffAccount(importSlip.getStaffAccount());
                 importSlipDto.setSupplierName(GetSupplierNameById(importSlip.getIdSupplier()).getBody());
                 importSlipDto.setIdOrderSlip(importSlipDto.getIdOrderSlip());
                 importSlipDtos.add(importSlipDto);
@@ -52,7 +51,6 @@ public class ImportSlipService {
             ImportSlipDto importSlipDto = new ImportSlipDto();
             importSlipDto.setId(importSlip.getId());
             importSlipDto.setImportDate(importSlip.getImportDate());
-            importSlipDto.setStaffAccount(importSlip.getStaffAccount());
             importSlipDto.setSupplierName(GetSupplierNameById(importSlip.getIdSupplier()).getBody());
             importSlipDto.setIdOrderSlip(importSlipDto.getIdOrderSlip());
 
@@ -69,7 +67,6 @@ public class ImportSlipService {
 
             ImportSlip importSlip = new ImportSlip();
             importSlip.setImportDate(importSlipDto.getImportDate());
-            importSlip.setStaffAccount(importSlipDto.getStaffAccount());
             importSlip.setIdSupplier(GetSupplierIdByName(importSlipDto.getSupplierName()).getBody());
             importSlip.setIdOrderSlip(importSlipDto.getIdOrderSlip());
             ImportSlip importSlipTemp = importSlipDao.save(importSlip);

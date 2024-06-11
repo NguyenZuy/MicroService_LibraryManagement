@@ -34,12 +34,6 @@ public class ReturnSlip {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "customer_account")
-    private String customerAccount;
-
-    @Column(name = "staff_account")
-    private String staffAccount;
-
     @Column(name = "loan_id")
     private Integer loanId;
 

@@ -206,7 +206,7 @@ public class LoanSlipFragment extends Fragment {
         });
 
         // Gọi API để lấy danh sách sách
-        Call<List<NewBook>> call = restfulAPIService.GetBooks();
+        Call<List<NewBook>> call = restfulAPIService.getBorrowableBooks();
         call.enqueue(new Callback<List<NewBook>>() {
             @Override
             public void onResponse(Call<List<NewBook>> call, Response<List<NewBook>> response) {

@@ -63,8 +63,6 @@ public class ImportSlipAdapter extends ArrayAdapter<ImportSlip> {
             e.printStackTrace();
             // Handle the exception, e.g., show an error message
         }
-
-        tvStaff.setText(importSlip.getStaffAccount());
         tvSupplier.setText(importSlip.getSupplierName());
 
         return convertView;

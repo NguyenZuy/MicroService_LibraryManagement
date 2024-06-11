@@ -31,7 +31,6 @@ public class OrderSlipService {
                 OrderSlipDto orderSlipDto = new OrderSlipDto();
                 orderSlipDto.setId(orderSlip.getId());
                 orderSlipDto.setOrderDate(orderSlip.getOrderDate());
-                orderSlipDto.setStaffAccount(orderSlip.getStaffAccount());
                 orderSlipDto.setSupplierName(GetSupplierNameById(orderSlip.getIdSupplier()).getBody());
 
                 orderSlipDtos.add(orderSlipDto);
@@ -55,7 +54,6 @@ public class OrderSlipService {
             OrderSlipDto orderSlipDto = new OrderSlipDto();
             orderSlipDto.setId(orderSlip.getId());
             orderSlipDto.setOrderDate(orderSlip.getOrderDate());
-            orderSlipDto.setStaffAccount(orderSlip.getStaffAccount());
             orderSlipDto.setSupplierName(GetSupplierNameById(orderSlip.getIdSupplier()).getBody());
 
             return new ResponseEntity<>(orderSlipDto, HttpStatus.OK);
@@ -70,7 +68,6 @@ public class OrderSlipService {
             OrderSlip orderSlip = new OrderSlip();
             orderSlip.setId(orderSlipDto.getId());
             orderSlip.setOrderDate(orderSlipDto.getOrderDate());
-            orderSlip.setStaffAccount(orderSlipDto.getStaffAccount());
             orderSlip.setIdSupplier(GetSupplierIdByName(orderSlipDto.getSupplierName()).getBody());
 
             OrderSlip orderSlipTemp = orderSlipDao.save(orderSlip);

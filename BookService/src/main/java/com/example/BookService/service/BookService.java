@@ -60,7 +60,7 @@ public class BookService {
             book.setAvailableQuantity(bookDto.getAvailableQuantity());
             book.setPublisher(publisher);
             book.setCategory(category);
-            book.setStatus("Borrowable");
+            book.setStatus(bookDto.getStatus());
             bookDao.save(book);
 
             // Get all books

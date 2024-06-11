@@ -5,7 +5,6 @@ import java.util.Date;
 public class ImportSlip {
     private Integer id;
     private String importDate;
-    private String staffAccount;
     private String supplierName;
     private Integer idOrderSlip;
 
@@ -25,10 +24,6 @@ public class ImportSlip {
         return idOrderSlip;
     }
 
-    public String getStaffAccount() {
-        return staffAccount;
-    }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -43,9 +38,5 @@ public class ImportSlip {
 
     public void setIdOrderSlip(Integer idOrderSlip) {
         this.idOrderSlip = idOrderSlip;
-    }
-
-    public void setStaffAccount(String staffAccount) {
-        this.staffAccount = staffAccount;
     }
 }

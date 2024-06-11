@@ -9,8 +9,6 @@ public class ReturnSlip {
     private String address;
     private String firstName;
     private String lastName;
-    private String customerAccount;
-    private String staffAccount;
     private Integer loanId;
 
     public void setId(Integer id) {
@@ -35,14 +33,6 @@ public class ReturnSlip {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public void setCustomerAccount(String customerAccount) {
-        this.customerAccount = customerAccount;
-    }
-
-    public void setStaffAccount(String staffAccount) {
-        this.staffAccount = staffAccount;
     }
 
     public void setLoanId(Integer loanId) {
@@ -71,14 +61,6 @@ public class ReturnSlip {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public String getCustomerAccount() {
-        return customerAccount;
-    }
-
-    public String getStaffAccount() {
-        return staffAccount;
     }
 
     public Integer getLoanId() {

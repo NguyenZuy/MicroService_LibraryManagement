@@ -13,6 +13,5 @@ import java.util.Date;
 public class OrderSlipDto {
     private Integer id;
     private Date orderDate;
-    private String staffAccount;
     private String supplierName;
 }
