@@ -19,7 +19,7 @@ services:
       retries: 5
 
   service-registry:
-    image: service-registry:latest  # Assuming you have an image for Eureka Server built
+    image: nguyenzuy/service-registry:latest  # Assuming you have an image for Eureka Server built
     container_name: service-registry
     ports:
       - 8761:8761
@@ -31,7 +31,7 @@ services:
       - eureka.client.register-with-eureka=false
 
   api-gateway:
-    image: api-gateway:latest  # Assuming you have an image for the book service
+    image: nguyenzuy/api-gateway:latest  # Assuming you have an image for the book service
     container_name: api-gateway
     ports:
       - 9191:9191  # Map container port 9091 to host port 9091
@@ -68,7 +68,7 @@ services:
       - spring.cloud.gateway.routes[5].predicates[0]=Path=/importSlip/**, /detailImportSlip/**
 
   book-service:
-    image: book-service:latest  # Assuming you have an image for the book service
+    image: nguyenzuy/book-service:latest  # Assuming you have an image for the book service
     container_name: book-service
     ports:
       - 8081:8081  # Map container port 8081 to host port 8081
@@ -85,7 +85,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/  # Update to use the service-registry service name
 
   loan-slip-service:
-    image: loan-slip-service:latest  # Assuming you have an image for the book service
+    image: nguyenzuy/loan-slip-service:latest  # Assuming you have an image for the book service
     container_name: loan-slip-service
     ports:
       - 8082:8082  # Map container port 8081 to host port 8081
@@ -102,7 +102,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/  # Update to use the service-registry service name
 
   return-slip-service:
-    image: return-slip-service:latest  # Assuming you have an image for the book service
+    image: nguyenzuy/return-slip-service:latest  # Assuming you have an image for the book service
     container_name: return-slip-service
     ports:
       - 8089:8089  # Map container port 8081 to host port 8081
@@ -119,7 +119,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/  # Update to use the service-registry service name
 
   supplier-service:
-    image: supplier-service:latest  # Assuming you have an image for the book service
+    image: nguyenzuy/supplier-service:latest  # Assuming you have an image for the book service
     container_name: supplier-service
     ports:
       - 8084:8084  # Map container port 8081 to host port 8081
@@ -136,7 +136,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/  # Update to use the service-registry service name
 
   order-slip-service:
-    image: order-slip-service:latest  # Assuming you have an image for the book service
+    image: nguyenzuy/order-slip-service:latest  # Assuming you have an image for the book service
     container_name: order-slip-service
     ports:
       - 8085:8085  # Map container port 8081 to host port 8081
@@ -153,7 +153,7 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/  # Update to use the service-registry service name
 
   import-slip-service:
-    image: import-slip-service:latest  # Assuming you have an image for the book service
+    image: nguyenzuy/import-slip-service:latest  # Assuming you have an image for the book service
     container_name: import-slip-service
     ports:
       - 8086:8086  # Map container port 8081 to host port 8081
